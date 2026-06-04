@@ -177,8 +177,7 @@ export default function ChatbotWidget({ onOpenCategory }: ChatbotWidgetProps) {
       {/* Main Chat Dialog Box Frame */}
       {isOpen && (
         <div 
-          className="w-[320px] sm:w-[360px] h-[480px] bg-[#141419]/90 border border-white/[0.08] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] mt-3 overflow-hidden flex flex-col animate-in fade-in slide-in-from-bottom-5 duration-300"
-          style={{ backdropFilter: 'blur(20px)' }}
+          className="w-[320px] sm:w-[360px] h-[480px] glass-modal rounded-2xl mt-3 overflow-hidden flex flex-col animate-in fade-in slide-in-from-bottom-5 duration-300"
         >
           {/* Header Bar */}
           <div className="bg-[#c9a84c]/5 border-b border-white/[0.06] p-4 flex items-center justify-between">

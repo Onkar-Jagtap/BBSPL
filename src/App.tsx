@@ -351,18 +351,16 @@ export default function App() {
               <p className="text-xs text-[#c4beb4] leading-relaxed">
                 We find elite solutions at direct-contractor rates. When you request any corporate service, we source side-by-side quotations from our pre-vetted Pune network. You select your preferred bid, and we earn a referral commission directly from the supplier. Absolutely zero markup or fees passed on to your business.
               </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            </div>            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 { step: '01', title: 'Submit Request', desc: 'Submit specifications for your required service—whether technology development, IT rentals, facility setup, or security staff.' },
                 { step: '02', title: 'Direct Partner Quotes', desc: 'We deliver clear, side-by-side quotations directly from our accredited local partners at their authentic, standard industry pricing.' },
                 { step: '03', title: 'Select Your Match', desc: 'Review the bids and pick the partner that fits your operational budget, delivery targets, or rating preference perfectly.' },
-                { step: '04', title: 'Free SLA Guarantee', desc: 'We oversee the contract and enforce active service level agreements. Our fee is covered entirely via the vendor\'s commission percentage.' }
+                { step: '04', title: 'Free SLA Guarantee', desc: "We oversee the contract and enforce active service level agreements. Our fee is covered entirely via the vendor's commission percentage." }
               ].map((step, idx) => (
                 <div 
                   key={idx}
-                  className="p-6 rounded-2xl bg-[#141419]/25 border border-white/[0.04] hover:bg-[#141419]/45 hover:border-white/[0.08] transition-all duration-300 group select-none relative overflow-hidden"
+                  className="glass-card p-6 rounded-2xl group select-none relative overflow-hidden"
                 >
                   <div className="font-serif text-4xl font-light text-[#c9a84c]/20 group-hover:text-[#c9a84c]/50 transition-colors duration-300 mb-5">
                     {step.step}
@@ -370,17 +368,17 @@ export default function App() {
                   <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mb-2 font-head">
                     {step.title}
                   </h4>
-                  <p className="text-[11px] sm:text-xs text-[#8a8278] leading-relaxed font-light">
+                  <p className="text-[11px] sm:text-xs text-[#c4beb4] leading-relaxed font-light">
                     {step.desc}
                   </p>
                 </div>
               ))}
             </div>
           </section>
-
+  
           {/* SECTION 4: COUNTER STATS COHORT */}
-          <section className="pointer-events-auto bg-[#141419]/15 border border-white/[0.04] rounded-3xl p-8 sm:p-12 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#c9a84c]/[0.01] via-transparent to-transparent" />
+          <section className="pointer-events-auto glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#c9a84c]/[0.02] via-transparent to-transparent opacity-50" />
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 relative z-10 text-center">
               {[
                 { target: 10, suffix: '', lbl: 'Unified Verticals' },
@@ -392,7 +390,7 @@ export default function App() {
                   <div className="font-serif font-light text-3xl sm:text-4xl lg:text-4xl text-[#e2c06a] leading-none">
                     <AnimatedCounter target={stat.target} suffix={stat.suffix} />
                   </div>
-                  <div className="text-[10px] font-bold uppercase text-[#8a8278] tracking-[0.15em] font-sans">
+                  <div className="text-[10px] font-bold uppercase text-[#8a8278] tracking-[0.15em] font-head">
                     {stat.lbl}
                   </div>
                 </div>
@@ -413,7 +411,7 @@ export default function App() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-8 rounded-2xl bg-[#141419]/30 border border-white/[0.04] hover:bg-[#141419]/45 transition-all duration-300">
+              <div className="glass-card p-8 rounded-2xl">
                 <p className="text-xs sm:text-sm text-[#c4beb4] leading-relaxed italic font-light">
                   "BusinessBridge saved us weeks of redundant tender documentation and supplier sourcing. IT software infrastructure, Facility operations, and physical building security — all aggregated transparently under one managed agreement."
                 </p>
@@ -428,7 +426,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="p-8 rounded-2xl bg-[#141419]/30 border border-white/[0.04] hover:bg-[#141419]/45 transition-all duration-300">
+              <div className="glass-card p-8 rounded-2xl">
                 <p className="text-xs sm:text-sm text-[#c4beb4] leading-relaxed italic font-light">
                   "Our legal audits and ISO standard certification targets through BusinessBridge was exceptionally prompt. Their verified attorney network handled trademark applications, internal controls documentation, and compliance filings within timeline limits."
                 </p>
@@ -466,7 +464,7 @@ export default function App() {
                   return (
                     <div
                       key={idx}
-                      className={`border border-white/[0.04] rounded-xl overflow-hidden transition-all duration-500 bg-[#141419]/${isOpen ? '40 border-[#c9a84c]/20 shadow-[0_4px_25px_rgba(201,168,76,0.05)]' : '15'}`}
+                      className={`glass-card rounded-xl overflow-hidden transition-all duration-500 ${isOpen ? 'border-[#c9a84c]/25 shadow-[0_10px_30px_rgba(201,168,76,0.04)] bg-white/[0.04]' : 'bg-transparent'}`}
                     >
                       <button
                         onClick={() => toggleFaq(idx)}
@@ -513,7 +511,7 @@ export default function App() {
                   return (
                     <div
                       key={idx}
-                      className={`border border-white/[0.04] rounded-xl overflow-hidden transition-all duration-500 bg-[#141419]/${isOpen ? '40 border-[#c9a84c]/20 shadow-[0_4px_25px_rgba(201,168,76,0.05)]' : '15'}`}
+                      className={`glass-card rounded-xl overflow-hidden transition-all duration-500 ${isOpen ? 'border-[#c9a84c]/25 shadow-[0_10px_30px_rgba(201,168,76,0.04)] bg-white/[0.04]' : 'bg-transparent'}`}
                     >
                       <button
                         onClick={() => toggleFaq(idx)}

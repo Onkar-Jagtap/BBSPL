@@ -146,13 +146,13 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
 
   return (
     <div 
-      className="fixed inset-0 z-[700] bg-[#030305]/90 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+      className="fixed inset-0 z-[700] bg-[#030305]/75 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget && !isSubmitting) onClose();
       }}
     >
       <div 
-        className="w-full max-w-[640px] bg-[#141419]/95 border border-white/[0.08] p-5 sm:p-7 rounded-2xl shadow-[0_30px_70px_rgba(0,0,0,0.85)] relative my-auto animate-in fade-in zoom-in duration-300"
+        className="w-full max-w-[640px] glass-modal p-5 sm:p-7 rounded-2xl relative my-auto animate-in fade-in zoom-in duration-300"
       >
         {/* Close Button */}
         {!isSubmitting && (
