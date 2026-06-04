@@ -41,13 +41,13 @@ export default function App() {
   const [panelOpen, setPanelOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>('quote');
   
-  // High-performance custom cursor tracking coordinates
-  const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
+  // Custom cursor hover tracking
   const [isHovered, setIsHovered] = useState(false);
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
 
   // State for cursor trailing sparkles
   const [sparkles, setSparkles] = useState<{ id: string; x: number; y: number; scale: number; color: string }[]>([]);
+  const lastSparklePosRef = useRef({ x: 0, y: 0 });
 
   // Garbage collect old sparkles that have completed their lifespan to maintain low memory
   useEffect(() => {
@@ -56,63 +56,88 @@ export default function App() {
       const now = Date.now();
       setSparkles(prev => prev.filter(spark => {
         const timestamp = parseFloat(spark.id.split('-')[0]);
-        return now - timestamp < 800;
+        return now - timestamp < 900;
       }));
-    }, 200);
+    }, 150);
     return () => clearInterval(interval);
   }, [sparkles.length]);
 
-  // Setup cursor coordinate tracking listeners
+  // Setup cursor coordinate tracking listeners and DOM animation loop
   useEffect(() => {
+    const cdot = document.getElementById('cdot');
+    const cring = document.getElementById('cring');
+
+    let mx = -100;
+    let my = -100;
+    let rx = -100;
+    let ry = -100;
+
     const handleGlobalMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      mx = e.clientX;
+      my = e.clientY;
 
-      // Spawn beautiful golden star sparkles on every cursor movement for a premium trail
-      const colors = ['#e2c06a', '#c9a84c', '#fff2cb', '#ffffff', '#ffd700'];
-      const id1 = `${Date.now()}-${Math.random()}`;
-      const newSparkle1 = {
-        id: id1,
-        x: e.clientX,
-        y: e.clientY,
-        scale: Math.random() * 0.8 + 0.4,
-        color: colors[Math.floor(Math.random() * colors.length)],
-      };
-
-      const extraSparkles = [];
-      if (Math.random() < 0.5) {
-        const id2 = `${Date.now()}-${Math.random()}`;
-        extraSparkles.push({
-          id: id2,
-          x: e.clientX + (Math.random() * 12 - 6),
-          y: e.clientY + (Math.random() * 12 - 6),
-          scale: Math.random() * 0.5 + 0.2,
-          color: colors[Math.floor(Math.random() * colors.length)],
-        });
+      if (cdot) {
+        cdot.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
       }
 
-      setSparkles(prev => [...prev.slice(-35), newSparkle1, ...extraSparkles]);
+      // Spacing-gate sparkle creation to produce discrete premium stars
+      const dx = e.clientX - lastSparklePosRef.current.x;
+      const dy = e.clientY - lastSparklePosRef.current.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance > 20) {
+        lastSparklePosRef.current = { x: e.clientX, y: e.clientY };
+        
+        const colors = ['#e2c06a', '#c9a84c', '#ffd700', '#fff5df', '#ffe8a3'];
+        const id = `${Date.now()}-${Math.random()}`;
+        const newSparkle = {
+          id,
+          x: e.clientX,
+          y: e.clientY,
+          scale: Math.random() * 0.5 + 0.4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+        };
+
+        setSparkles(prev => [...prev.slice(-25), newSparkle]);
+      }
     };
 
+    let frameId: number;
+    const animRing = () => {
+      // Lag follow factor 0.2 produces luxurious smooth tracking delay
+      rx += (mx - rx) * 0.2;
+      ry += (my - ry) * 0.2;
+
+      if (cring) {
+        cring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`;
+      }
+
+      frameId = requestAnimationFrame(animRing);
+    };
+
+    window.addEventListener('mousemove', handleGlobalMouseMove);
+    animRing();
+
+    // Bind custom hover listeners to interactive classes dynamically
     const handleHoverTargetsEnter = () => setIsHovered(true);
     const handleHoverTargetsLeave = () => setIsHovered(false);
 
-    window.addEventListener('mousemove', handleGlobalMouseMove);
-
-    // Bind custom hover listeners to interactive classes dynamically
     const updateInteractiveTriggers = () => {
-      const elements = document.querySelectorAll('button, a, .glass-card, [role="button"]');
+      const elements = document.querySelectorAll('button, a, .glass-card, [role="button"], .faq-q');
       elements.forEach(el => {
+        el.removeEventListener('mouseenter', handleHoverTargetsEnter);
+        el.removeEventListener('mouseleave', handleHoverTargetsLeave);
         el.addEventListener('mouseenter', handleHoverTargetsEnter);
         el.addEventListener('mouseleave', handleHoverTargetsLeave);
       });
     };
 
-    // Update triggers immediately and on a small buffer delay to catch deferred layouts
     updateInteractiveTriggers();
     const timer = setTimeout(updateInteractiveTriggers, 800);
 
     return () => {
       window.removeEventListener('mousemove', handleGlobalMouseMove);
+      cancelAnimationFrame(frameId);
       clearTimeout(timer);
     };
   }, []);
@@ -159,6 +184,31 @@ export default function App() {
       {/* Background WebGL / Gradient Fallback Canvas */}
       <BackgroundCanvas />
 
+      {/* High-Contrast Golden Spark Cursor & Trailing Ring */}
+      <div id="cdot" className="pointer-events-none fixed z-[9999] rounded-full hidden md:block" style={{
+        position: 'fixed',
+        width: '4px',
+        height: '4px',
+        background: '#ffd700',
+        borderRadius: '50%',
+        pointerEvents: 'none',
+        boxShadow: '0 0 10px #c9a84c, 0 0 20px #c9a84c, 0 0 35px #e2c06a',
+        transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%)',
+        willChange: 'transform',
+      }} />
+      <div id="cring" className="pointer-events-none fixed z-[9998] rounded-full hidden md:block transition-[width,height,background-color,backdrop-filter,border-color] duration-500 ease-out" style={{
+        position: 'fixed',
+        width: isHovered ? '70px' : '40px',
+        height: isHovered ? '70px' : '40px',
+        border: isHovered ? 'none' : '1px solid rgba(201,168,76,0.4)',
+        borderRadius: '50%',
+        pointerEvents: 'none',
+        background: isHovered ? 'rgba(201,168,76,0.05)' : 'transparent',
+        backdropFilter: isHovered ? 'blur(2px)' : 'none',
+        transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%)',
+        willChange: 'transform',
+      }} />
+
       {/* Elegant Golden Star Trails (Sparkles) following cursor */}
       <div className="pointer-events-none fixed inset-0 z-[9996] overflow-hidden hidden md:block">
         <AnimatePresence>
@@ -170,19 +220,19 @@ export default function App() {
                 left: spark.x,
                 top: spark.y,
               }}
-              initial={{ scale: spark.scale * 0.4, opacity: 0.9, rotate: 0 }}
+              initial={{ scale: spark.scale, opacity: 0.9, rotate: 0 }}
               animate={{ 
-                scale: [spark.scale * 0.4, spark.scale, 0], 
-                opacity: [0.9, 1, 0], 
-                y: [0, Math.random() * 40 + 20], // Elegant gravity drift downwards
-                x: [0, Math.random() * 30 - 15],  // Subtle side breeze drift
-                rotate: Math.random() < 0.5 ? 240 : -240 
+                scale: 0, 
+                opacity: 0, 
+                y: Math.random() * 40 + 20, // Gorgeous physical gravity drift downwards
+                x: Math.random() * 24 - 12,  // Gentle side sway
+                rotate: Math.random() < 0.5 ? 180 : -180 
               }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.9, ease: 'easeOut' }}
-              className="pointer-events-none w-4 h-4 flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              className="pointer-events-none w-3.5 h-3.5 flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
             >
-              <svg viewBox="0 0 100 100" className="w-full h-full filter drop-shadow-[0_0_4px_rgba(226,192,106,0.6)]" style={{ fill: spark.color }}>
+              <svg viewBox="0 0 100 100" className="w-full h-full filter drop-shadow-[0_0_5px_rgba(226,192,106,0.7)]" style={{ fill: spark.color }}>
                 <path d="M 50 0 C 50 35, 35 50, 0 50 C 35 50, 50 65, 50 100 C 50 65, 65 50, 100 50 C 65 50, 50 35, 50 0 Z" />
               </svg>
             </motion.div>
