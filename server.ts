@@ -275,7 +275,7 @@ Guidelines:
     console.error('[CRITICAL_ERROR] Gemini API Chat invocation threw exception:', err);
     // Graceful error fallback response so user is never stalled
     return res.json({
-      text: "I apologies, our automated neural concierge is currently experiencing heavier call volumes. To proceed instantly, click 'Request a Free Quote' above or dial our Pune headquarters directly. We promise to address your requirements perfectly.",
+      text: "I apologize, our automated neural concierge is currently experiencing heavier call volumes. To proceed instantly, click 'Request a Free Quote' above or dial our Pune headquarters directly. We promise to address your requirements perfectly.",
       promptQuoteWithCategory: undefined
     });
   }

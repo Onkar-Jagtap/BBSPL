@@ -92,7 +92,7 @@ export default function ChatbotWidget({ onOpenCategory }: ChatbotWidgetProps) {
       setIsTyping(false);
       addMessage(
         'bot',
-        'I apologies! Our Pune servers encountered a brief compliance validation check. You can request a callback directly using the **Free Quote** button at the top header, and our SLA is fully operational.'
+        'I apologize! Our Pune servers encountered a brief compliance validation check. You can request a callback directly using the **Free Quote** button at the top header, and our SLA is fully operational.'
       );
     }
   };

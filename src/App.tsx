@@ -41,16 +41,56 @@ export default function App() {
   const [panelOpen, setPanelOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>('quote');
   
-  // High-performance custom lagged cursor position coordinates
+  // High-performance custom cursor tracking coordinates
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
-  const [ringPos, setRingPos] = useState({ x: -100, y: -100 });
   const [isHovered, setIsHovered] = useState(false);
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
+
+  // State for cursor trailing sparkles
+  const [sparkles, setSparkles] = useState<{ id: string; x: number; y: number; scale: number; color: string }[]>([]);
+
+  // Garbage collect old sparkles that have completed their lifespan to maintain low memory
+  useEffect(() => {
+    if (sparkles.length === 0) return;
+    const interval = setInterval(() => {
+      const now = Date.now();
+      setSparkles(prev => prev.filter(spark => {
+        const timestamp = parseFloat(spark.id.split('-')[0]);
+        return now - timestamp < 800;
+      }));
+    }, 200);
+    return () => clearInterval(interval);
+  }, [sparkles.length]);
 
   // Setup cursor coordinate tracking listeners
   useEffect(() => {
     const handleGlobalMouseMove = (e: MouseEvent) => {
       setMousePos({ x: e.clientX, y: e.clientY });
+
+      // Spawn beautiful golden star sparkles on every cursor movement for a premium trail
+      const colors = ['#e2c06a', '#c9a84c', '#fff2cb', '#ffffff', '#ffd700'];
+      const id1 = `${Date.now()}-${Math.random()}`;
+      const newSparkle1 = {
+        id: id1,
+        x: e.clientX,
+        y: e.clientY,
+        scale: Math.random() * 0.8 + 0.4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+      };
+
+      const extraSparkles = [];
+      if (Math.random() < 0.5) {
+        const id2 = `${Date.now()}-${Math.random()}`;
+        extraSparkles.push({
+          id: id2,
+          x: e.clientX + (Math.random() * 12 - 6),
+          y: e.clientY + (Math.random() * 12 - 6),
+          scale: Math.random() * 0.5 + 0.2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+        });
+      }
+
+      setSparkles(prev => [...prev.slice(-35), newSparkle1, ...extraSparkles]);
     };
 
     const handleHoverTargetsEnter = () => setIsHovered(true);
@@ -77,23 +117,6 @@ export default function App() {
     };
   }, []);
 
-  // Soft elastic interpolation ring lag loop
-  useEffect(() => {
-    let animationFrameId: number;
-    let rx = ringPos.x;
-    let ry = ringPos.y;
-
-    const animateRing = () => {
-      // 18% damping factor for luxurious inertial glide
-      rx += (mousePos.x - rx) * 0.18;
-      ry += (mousePos.y - ry) * 0.18;
-      setRingPos({ x: rx, y: ry });
-      animationFrameId = requestAnimationFrame(animateRing);
-    };
-    animateRing();
-
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [mousePos]);
 
   // Handle category inquiry sheet launch requests
   const openCategoryInquiry = (categoryName: string) => {
@@ -136,43 +159,36 @@ export default function App() {
       {/* Background WebGL / Gradient Fallback Canvas */}
       <BackgroundCanvas />
 
-      {/* Lagging Custom Cursor Aesthetics (Hidden on touch devices) */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '5px',
-          height: '5px',
-          backgroundColor: '#e2c06a',
-          borderRadius: '50%',
-          transform: `translate3d(${mousePos.x - 2.5}px, ${mousePos.y - 2.5}px, 0)`,
-          pointerEvents: 'none',
-          zIndex: 9999,
-          boxShadow: '0 0 10px #c9a84c',
-          display: 'none',
-        }}
-        className="pointer-events-none md:block"
-      />
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: isHovered ? '70px' : '40px',
-          height: isHovered ? '70px' : '40px',
-          borderRadius: '50%',
-          border: isHovered ? '1px solid transparent' : '1px solid rgba(201, 168, 76, 0.4)',
-          backgroundColor: isHovered ? 'rgba(201, 168, 76, 0.05)' : 'transparent',
-          backdropFilter: isHovered ? 'blur(2px)' : 'none',
-          transform: `translate3d(${ringPos.x}px, ${ringPos.y}px, 0) translate(-50%, -50%)`,
-          pointerEvents: 'none',
-          zIndex: 9998,
-          transition: 'width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s, backdrop-filter 0.3s',
-          display: 'none',
-        }}
-        className="pointer-events-none md:block"
-      />
+      {/* Elegant Golden Star Trails (Sparkles) following cursor */}
+      <div className="pointer-events-none fixed inset-0 z-[9996] overflow-hidden hidden md:block">
+        <AnimatePresence>
+          {sparkles.map(spark => (
+            <motion.div
+              key={spark.id}
+              style={{
+                position: 'fixed',
+                left: spark.x,
+                top: spark.y,
+              }}
+              initial={{ scale: spark.scale * 0.4, opacity: 0.9, rotate: 0 }}
+              animate={{ 
+                scale: [spark.scale * 0.4, spark.scale, 0], 
+                opacity: [0.9, 1, 0], 
+                y: [0, Math.random() * 40 + 20], // Elegant gravity drift downwards
+                x: [0, Math.random() * 30 - 15],  // Subtle side breeze drift
+                rotate: Math.random() < 0.5 ? 240 : -240 
+              }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.9, ease: 'easeOut' }}
+              className="pointer-events-none w-4 h-4 flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
+            >
+              <svg viewBox="0 0 100 100" className="w-full h-full filter drop-shadow-[0_0_4px_rgba(226,192,106,0.6)]" style={{ fill: spark.color }}>
+                <path d="M 50 0 C 50 35, 35 50, 0 50 C 35 50, 50 65, 50 100 C 50 65, 65 50, 100 50 C 65 50, 50 35, 50 0 Z" />
+              </svg>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
 
       {/* UI Interface Overlay Wrapper */}
       <div className="relative z-10 w-full min-h-screen flex flex-col">
