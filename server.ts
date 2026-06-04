@@ -153,9 +153,9 @@ We operate across 10 major consolidated enterprise categories representing all e
 10. Manufacturing & Industrial Services (precise CNC machining, structural fabrication, industrial packing boxes, manual tech workers)
 
 Our Core Value Propositions:
-- Single point of consolidated billing and coordination (Eliminates calling 20 different vendors).
+- Single point of consolidated communication (Eliminates calling 20 different vendors).
 - Guaranteed 2-Hour callback promise SLA during standard business hours.
-- Thorough legal verification, background checks, and certifications on all network providers (Free for clients, we charge providers a minimal platform coordination fee).
+- Our Revenue Model: Absolutely zero markups on quotations! We deliver authentic partner price quotes directly to the user to choose from. Our business generates revenue entirely through a match commission percentage paid directly by the selected supplier / vendor.
 - Located in Pune, Maharashtra, operating across major cities (Pune, Mumbai, Bangalore, Gurgaon).
 
 Your Tone:

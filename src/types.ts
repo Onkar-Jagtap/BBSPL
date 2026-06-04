@@ -248,8 +248,8 @@ export const SERVICES_LIST: B2BServiceData[] = [
 
 export const GENERAL_QUESTIONS = [
   {
-    question: 'Is there a cost to use BusinessBridge?',
-    answer: 'Enquiring and receiving compared, vetted quotes through BusinessBridge is completely free. We earn a small coordination fee directly from our service partners upon successful project initiation — meaning there are absolutely zero extra costs, markups, or hidden service fees billed to your enterprise.'
+    question: 'How does BusinessBridge make money? Do you markup partner quotes?',
+    answer: 'We never markup pricing! When you call us for any service, we provide you with direct partner prices and quotations from our network. You choose the partner quote that fits your company best. Once you make your selection, the selected vendor service provider pays us a standard commission percentage for matching them to the job. This keeps our service 100% free of client markups or extra fees for your business.'
   },
   {
     question: 'How quickly do you respond to inquiries?',

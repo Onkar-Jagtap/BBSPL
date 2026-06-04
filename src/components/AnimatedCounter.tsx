@@ -60,7 +60,11 @@ export default function AnimatedCounter({ target, suffix = '', duration = 1500 }
   return (
     <div ref={elementRef} className="inline-block">
       <span>{count}</span>
-      {suffix && <span className="text-[#c9a84c] ml-0.5">{suffix}</span>}
+      {suffix && (
+        <span className="text-[#c9a84c] ml-1 text-[0.65em] font-normal tracking-tight font-sans">
+          {suffix}
+        </span>
+      )}
     </div>
   );
 }

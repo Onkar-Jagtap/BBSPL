@@ -65,12 +65,9 @@ export default function App() {
   // Setup cursor coordinate tracking listeners and DOM animation loop
   useEffect(() => {
     const cdot = document.getElementById('cdot');
-    const cring = document.getElementById('cring');
 
     let mx = -100;
     let my = -100;
-    let rx = -100;
-    let ry = -100;
 
     const handleGlobalMouseMove = (e: MouseEvent) => {
       mx = e.clientX;
@@ -102,21 +99,7 @@ export default function App() {
       }
     };
 
-    let frameId: number;
-    const animRing = () => {
-      // Lag follow factor 0.2 produces luxurious smooth tracking delay
-      rx += (mx - rx) * 0.2;
-      ry += (my - ry) * 0.2;
-
-      if (cring) {
-        cring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`;
-      }
-
-      frameId = requestAnimationFrame(animRing);
-    };
-
     window.addEventListener('mousemove', handleGlobalMouseMove);
-    animRing();
 
     // Bind custom hover listeners to interactive classes dynamically
     const handleHoverTargetsEnter = () => setIsHovered(true);
@@ -137,7 +120,6 @@ export default function App() {
 
     return () => {
       window.removeEventListener('mousemove', handleGlobalMouseMove);
-      cancelAnimationFrame(frameId);
       clearTimeout(timer);
     };
   }, []);
@@ -184,7 +166,7 @@ export default function App() {
       {/* Background WebGL / Gradient Fallback Canvas */}
       <BackgroundCanvas />
 
-      {/* High-Contrast Golden Spark Cursor & Trailing Ring */}
+      {/* High-Contrast Golden Spark Cursor */}
       <div id="cdot" className="pointer-events-none fixed z-[9999] rounded-full hidden md:block" style={{
         position: 'fixed',
         width: '4px',
@@ -193,18 +175,6 @@ export default function App() {
         borderRadius: '50%',
         pointerEvents: 'none',
         boxShadow: '0 0 10px #c9a84c, 0 0 20px #c9a84c, 0 0 35px #e2c06a',
-        transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%)',
-        willChange: 'transform',
-      }} />
-      <div id="cring" className="pointer-events-none fixed z-[9998] rounded-full hidden md:block transition-[width,height,background-color,backdrop-filter,border-color] duration-500 ease-out" style={{
-        position: 'fixed',
-        width: isHovered ? '70px' : '40px',
-        height: isHovered ? '70px' : '40px',
-        border: isHovered ? 'none' : '1px solid rgba(201,168,76,0.4)',
-        borderRadius: '50%',
-        pointerEvents: 'none',
-        background: isHovered ? 'rgba(201,168,76,0.05)' : 'transparent',
-        backdropFilter: isHovered ? 'blur(2px)' : 'none',
         transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%)',
         willChange: 'transform',
       }} />
@@ -379,22 +349,22 @@ export default function App() {
                 <span className="italic text-[#e2c06a]">We Orchestrate Solutions.</span>
               </h2>
               <p className="text-xs text-[#c4beb4] leading-relaxed">
-                Rather than dealing with dozens of loose vendors, complex individual invoices, service disputes, and unpredictable quotes, BusinessBridge aggregates your operations under a single legal agreement with rigorous SLA enforcement.
+                We find elite solutions at direct-contractor rates. When you request any corporate service, we source side-by-side quotations from our pre-vetted Pune network. You select your preferred bid, and we earn a referral commission directly from the supplier. Absolutely zero markup or fees passed on to your business.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { step: '01', title: 'Consult Details', desc: 'Tell us your B2B targets, monthly staffing counts, compliance goals, or physical facility layout parameters.' },
-                { step: '02', title: 'Sourcing & Audit', desc: 'We source from our Pune-accredited roster of verified providers, carrying out legal, financial, and structural audits.' },
-                { step: '03', title: 'Select Proposals', desc: 'You receive structured side-by-side cost outlines. No confusing formats. Clear choices with full visibility.' },
-                { step: '04', title: 'Single Point SLA', desc: 'We coordinate contract lifecycles, enforce work timelines, manage audits, and handle escalations under one bill.' }
+                { step: '01', title: 'Submit Request', desc: 'Submit specifications for your required service—whether technology development, IT rentals, facility setup, or security staff.' },
+                { step: '02', title: 'Direct Partner Quotes', desc: 'We deliver clear, side-by-side quotations directly from our accredited local partners at their authentic, standard industry pricing.' },
+                { step: '03', title: 'Select Your Match', desc: 'Review the bids and pick the partner that fits your operational budget, delivery targets, or rating preference perfectly.' },
+                { step: '04', title: 'Free SLA Guarantee', desc: 'We oversee the contract and enforce active service level agreements. Our fee is covered entirely via the vendor\'s commission percentage.' }
               ].map((step, idx) => (
                 <div 
                   key={idx}
                   className="p-6 rounded-2xl bg-[#141419]/25 border border-white/[0.04] hover:bg-[#141419]/45 hover:border-white/[0.08] transition-all duration-300 group select-none relative overflow-hidden"
                 >
-                  <div className="font-mono text-3xl font-bold tracking-tighter text-[#c9a84c]/20 group-hover:text-[#c9a84c]/40 transition-colors duration-300 mb-6 font-head">
+                  <div className="font-head text-3xl font-extrabold tracking-tight text-[#c9a84c]/20 group-hover:text-[#c9a84c]/45 transition-colors duration-300 mb-6">
                     {step.step}
                   </div>
                   <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mb-2 font-head">
@@ -419,7 +389,7 @@ export default function App() {
                 { target: 2, suffix: '-Hour', lbl: 'SLA Response Guarantee' }
               ].map((stat, i) => (
                 <div key={i} className="space-y-1.5">
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-4xl sm:text-5xl md:text-6xl text-[#e2c06a] font-light leading-none">
+                  <div className="font-head font-extrabold text-3xl sm:text-4xl lg:text-5xl text-[#e2c06a] leading-none tracking-tight">
                     <AnimatedCounter target={stat.target} suffix={stat.suffix} />
                   </div>
                   <div className="text-[10px] font-bold uppercase text-[#8a8278] tracking-[0.15em] font-sans">
