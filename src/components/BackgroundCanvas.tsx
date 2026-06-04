@@ -56,8 +56,7 @@ const FRAGMENT_SHADER_SRC = `
     vec2 mouse = u_mouse.xy / u_resolution.xy;
     mouse.x *= u_resolution.x / u_resolution.y;
     
-    float dist = distance(st, mouse);
-    float force = smoothstep(0.5, 0.0, dist);
+    float force = 0.0;
     
     vec2 q = vec2(0.0);
     q.x = snoise(st + u_time * 0.04);
@@ -243,10 +242,7 @@ export default function BackgroundCanvas() {
   }, [webglError]);
 
   if (webglError) {
-    // Elegant, premium backup radial CSS animation fallback
-    const gradientX = (coords.x / window.innerWidth) * 100;
-    const gradientY = (coords.y / window.innerHeight) * 100;
-
+    // Elegant, premium static radial CSS fallback
     return (
       <div 
         id="css-fluid-background"
@@ -259,8 +255,7 @@ export default function BackgroundCanvas() {
           zIndex: 0,
           pointerEvents: 'none',
           backgroundColor: '#030305',
-          background: `radial-gradient(circle at ${gradientX}% ${gradientY}%, rgba(201, 168, 76, 0.04) 0%, rgba(3, 3, 5, 1) 75%)`,
-          transition: 'background 0.15s ease-out',
+          background: `radial-gradient(circle at 50% 50%, rgba(201, 168, 76, 0.03) 0%, rgba(3, 3, 5, 1) 75%)`,
         }}
       />
     );

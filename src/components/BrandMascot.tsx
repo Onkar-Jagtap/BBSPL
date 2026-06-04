@@ -153,7 +153,7 @@ export default function BrandMascot() {
               className="flex items-center gap-1.5 border border-[#e2c06a]/45 bg-zinc-950/95 px-3 py-1 rounded shadow-lg text-[#e2c06a]"
             >
               <Lightbulb className="w-3.5 h-3.5 text-yellow-300 animate-pulse" />
-              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest font-bold">100% SMART INTEGRATION</span>
+              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest font-bold">BUSINESSBRIDGE ACTIVE</span>
               <Sparkles className="w-3.5 h-3.5 text-yellow-400 animate-bounce" />
             </motion.div>
           )}

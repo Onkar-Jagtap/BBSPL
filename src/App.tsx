@@ -217,7 +217,7 @@ export default function App() {
         <Navbar onOpenPanel={openCategoryInquiry} />
 
         {/* --- MAIN BODY SECTIONS --- */}
-        <main className="flex-1 w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 pt-32 pb-16 space-y-24">
+        <main className="flex-1 w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 pt-[96px] lg:pt-[114px] pb-16 space-y-24">
           
           {/* SECTION 1: HERO OUTLINE */}
           <section className="min-h-[85vh] py-10 flex items-center pointer-events-auto">
@@ -364,7 +364,7 @@ export default function App() {
                   key={idx}
                   className="p-6 rounded-2xl bg-[#141419]/25 border border-white/[0.04] hover:bg-[#141419]/45 hover:border-white/[0.08] transition-all duration-300 group select-none relative overflow-hidden"
                 >
-                  <div className="font-head text-3xl font-extrabold tracking-tight text-[#c9a84c]/20 group-hover:text-[#c9a84c]/45 transition-colors duration-300 mb-6">
+                  <div className="font-serif text-4xl font-light text-[#c9a84c]/20 group-hover:text-[#c9a84c]/50 transition-colors duration-300 mb-5">
                     {step.step}
                   </div>
                   <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mb-2 font-head">
@@ -389,7 +389,7 @@ export default function App() {
                 { target: 2, suffix: '-Hour', lbl: 'SLA Response Guarantee' }
               ].map((stat, i) => (
                 <div key={i} className="space-y-1.5">
-                  <div className="font-head font-extrabold text-3xl sm:text-4xl lg:text-5xl text-[#e2c06a] leading-none tracking-tight">
+                  <div className="font-serif font-light text-3xl sm:text-4xl lg:text-4xl text-[#e2c06a] leading-none">
                     <AnimatedCounter target={stat.target} suffix={stat.suffix} />
                   </div>
                   <div className="text-[10px] font-bold uppercase text-[#8a8278] tracking-[0.15em] font-sans">
