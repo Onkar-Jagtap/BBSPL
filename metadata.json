@@ -1,0 +1,6 @@
+{
+  "name": "BusinessBridge",
+  "description": "Premium B2B Service Concierge connecting enterprises with verified providers in technology, compliance, facilities, and workforce development.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
