@@ -185,7 +185,7 @@ export const SERVICES_LIST: B2BServiceData[] = [
     category: 'IT Hardware & Equipment Rentals',
     icon: '🖥️',
     shortDesc: 'Flexible workstation leasing contracts, laptop fleet rentals, high-performance desktops, and printer equipment leasing.',
-    detailedDesc: 'Avoid large capital expend and scale your team size up or down dynamically with zero upfront hardware overhead. We supply and manage premium enterprise laptops, high-performance desktops, and industrial printers with prompt on-premise replacement SLAs and full-service repair support included.',
+    detailedDesc: 'Avoid large capital expend and scale your team size up or down dynamically with zero upfront hardware overhead. We supply and manage premium enterprise laptops, high-performance desktops, and industrial printers with prompt on-premise replacement guarantees and full-service repair support included.',
     options: CATEGORY_SERVICES['IT Hardware & Equipment Rentals']
   },
   {
@@ -206,7 +206,7 @@ export const SERVICES_LIST: B2BServiceData[] = [
     category: 'Marketing & Brand Solutions',
     icon: '📢',
     shortDesc: 'Multi-channel digital marketing, visual graphic branding, editorial content design, and custom corporate giftware.',
-    detailedDesc: 'Target premium market share and build strong corporate identity. We orchestrate performant digital advertising channels (PPC, SEO), cohesive brand guides, multimedia video editing, on-site photography, high-end corporate hampers, and sign boards.',
+    detailedDesc: 'Target premium market share and build strong corporate identity. We launch performant digital advertising channels (PPC, SEO), cohesive brand guides, multimedia video editing, on-site photography, high-end corporate hampers, and sign boards.',
     options: CATEGORY_SERVICES['Marketing & Brand Solutions']
   },
   {
@@ -220,7 +220,7 @@ export const SERVICES_LIST: B2BServiceData[] = [
     category: 'Facility, Housekeeping & Security',
     icon: '🔒',
     shortDesc: 'Comprehensive facilities operations, certified electro-mechanical engineers, sanitization, and enterprise security guard forces with CCTV.',
-    detailedDesc: 'Guarantee seamless day-to-day physical premises integrity. We unify mechanical-electrical maintenance (HVAC, fire panels, water ROs), executive security details, AI-assisted video surveillance centers, and premium cleaning contracts under one rigid Service Level Agreement (SLA).',
+    detailedDesc: 'Guarantee seamless day-to-day physical premises integrity. We unify mechanical-electrical maintenance (HVAC, fire panels, water ROs), executive security details, AI-assisted video surveillance centers, and premium cleaning contracts under one strict quality guarantee.',
     options: CATEGORY_SERVICES['Facility, Housekeeping & Security']
   },
   {
@@ -253,18 +253,18 @@ export const GENERAL_QUESTIONS = [
   },
   {
     question: 'How quickly do you respond to inquiries?',
-    answer: 'We guarantee a professional callback to define terms and answer queries within 2 business hours of receiving a quote or registration form. Our dedicated account executives coordinate everything immediately to provide initial comparative outlines within 24 hours.'
+    answer: 'We operate 24/7. Our dedicated account executives guarantee a professional callback to clarify terms and address requirements immediately inside standard hours or any shift. Initial comparative outlines from verified specialists are prepared within 24 hours.'
   },
   {
-    question: 'How are your partner businesses and services vetted?',
+    question: 'How are your partner businesses and services verified?',
     answer: 'Every vendor undergoes a comprehensive certification check including legal registrations (GST, CIN, ISO where applicable), creditworthiness checks, physical site visits, reviews of past corporate performance, and continuous operational checks on every active contract.'
   },
   {
     question: 'Can you handle multi-city or national outsourcing deployments?',
-    answer: 'Yes! BusinessBridge acts as a single point of consolidation. If you operate offices in Mumbai, Pune, Bangalore, or Gurgaon, we can unify physical facility management, workforce provisions, and network oversight under a single, simplified master agreement.'
+    answer: 'Yes! BusinessBridge acts as a single point of consolidation. If you operate corporate offices in Mumbai, Pune, Bangalore, Delhi NCR, Chennai, Hyderabad, or Kolkata, we can unify logistics, IT rentals, facility operations, and physical building security under a single master enterprise agreement.'
   },
   {
     question: 'Can we transition an existing vendor contract over to your managed system?',
-    answer: 'Absolutely. We will conduct a thorough transition audit, standardize service level agreements (SLAs), verify performance bounds, and onboarding the team smoothly without a single hour of business interruption.'
+    answer: 'Absolutely. We will conduct a thorough transition audit, standardize service quality agreements, verify performance bounds, and onboarding the team smoothly without a single hour of business interruption.'
   }
 ];

@@ -49,7 +49,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
 
   if (isPartner) {
     headerTitle = 'Become a Certified Partner';
-    subText = 'Register your enterprise inside BusinessBridge premium vetted vendor roster';
+    subText = 'Register your enterprise inside BusinessBridge premium registered service network';
     availableOptions = ['Register as Service Provider', 'Joint Venture Development', 'Strategic Master Vendor Inquiry'];
   } else if (isGeneralQuote) {
     headerTitle = 'Enterprise Free Quote Request';
@@ -57,7 +57,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
     availableOptions = Object.keys(CATEGORY_SERVICES);
   } else {
     availableOptions = CATEGORY_SERVICES[categoryName as ServiceCategory] || [];
-    subText = `Compare and manage vetted providers for ${categoryName}`;
+    subText = `Compare and manage approved providers for ${categoryName}`;
   }
 
   const toggleOption = (optName: string) => {
@@ -121,7 +121,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
       }
 
       setLeadRecordId(data.id || `LEAD_REF_${Math.floor(Math.random() * 900000 + 100000)}`);
-      setSuccessMsg(data.message || 'Your inquiry registered successfully with our Pune operations center.');
+      setSuccessMsg(data.message || 'Your inquiry registered successfully with our Central operations center.');
       
       // Cleanup inputs on success
       setOtherDetails('');
@@ -137,12 +137,9 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
     }
   };
 
-  // Launch WhatsApp fallback with pre-formatted message
-  const launchWhatsAppFallback = () => {
-    const activeDetails = `Hello BusinessBridge Support!\n\nI just submitted an inquiry on your portal.\n*Reference ID*: ${leadRecordId || 'N/A'}\n*Company*: ${companyName || 'Corporate Client'}\n*Authorized Contact*: ${contactName}\n*Category*: ${headerTitle}\n*Services selected*: ${selectedServices.join(', ') || 'General Consultation'}\n*Notes*: ${otherDetails || 'N/A'}`;
-    const uri = `https://wa.me/91XXXXXXXXXX?text=${encodeURIComponent(activeDetails)}`;
-    window.open(uri, '_blank', 'noopener,noreferrer');
-  };
+  // Compute standard pre-formatted WhatsApp content for secure and reliable action bypasses inside iframes
+  const whatsappMsgText = `Hello BusinessBridge Support!\n\nI just submitted an inquiry on your portal.\n*Reference ID*: ${leadRecordId || 'N/A'}\n*Category*: ${headerTitle}\n*Services selected*: ${selectedServices.join(', ') || 'General Consultation'}`;
+  const whatsappUrl = `https://wa.me/919999999999?text=${encodeURIComponent(whatsappMsgText)}`;
 
   return (
     <div 
@@ -166,7 +163,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
           </button>
         )}
 
-        {/* Success SLA Screen View */}
+        {/* Success Confirmation Screen View */}
         {successMsg ? (
           <div className="py-6 text-center animate-in fade-in zoom-in duration-400">
             <div className="w-16 h-16 bg-[#c9a84c]/10 border border-[#c9a84c]/30 rounded-full flex items-center justify-center mx-auto mb-5 text-[#e2c06a]">
@@ -182,28 +179,30 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
             </div>
 
             <p className="text-sm text-[#c4beb4] leading-relaxed max-w-md mx-auto mb-6">
-              {successMsg} Our team is shortlisting verified B2B specialists in Pune right now.
+              {successMsg} Our team is shortlisting verified B2B specialists nationwide right now.
             </p>
 
             <div className="bg-[#c9a84c]/5 border border-[#c9a84c]/15 p-4 rounded-xl max-w-md mx-auto text-left mb-6">
               <h4 className="text-xs font-bold uppercase text-[#e2c06a] tracking-wider mb-1 flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
-                2-Hour SLA Initiated
+                24/7 National Support Active
               </h4>
-              <p className="text-xs text-[#8a8278] leading-relaxed">
-                If submitted within standard corporate hours (9:00 AM - 6:00 PM IST), we guarantee contact within 2 hours.
+              <p className="text-xs text-[#bcbab4] leading-relaxed font-light">
+                Our support team is active round-the-clock nationwide. We guarantee connection with prime service partners immediately.
               </p>
             </div>
 
             {/* Expended Callback Button */}
             <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
-              <button
-                onClick={launchWhatsAppFallback}
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full sm:w-auto px-5 py-3 bg-[#c9a84c] text-[#030305] font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-[#e2c06a] hover:shadow-[0_0_15px_rgba(201,168,76,0.3)] transition-all duration-300 flex items-center justify-center gap-2"
               >
                 <PhoneCall className="w-3.5 h-3.5" />
                 Expedite via WhatsApp
-              </button>
+              </a>
               <button
                 onClick={onClose}
                 className="w-full sm:w-auto px-5 py-3 bg-white/[0.04] text-white font-semibold text-xs uppercase tracking-wider rounded-lg border border-white/[0.08] hover:bg-white/[0.08] transition-colors"
@@ -222,7 +221,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
               <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl text-white font-medium leading-tight">
                 {headerTitle}
               </h2>
-              <p className="text-xs text-[#8a8278] mt-1 leading-relaxed">
+              <p className="text-xs text-[#e8e6e2] mt-1 leading-relaxed">
                 {subText}
               </p>
             </div>
@@ -277,7 +276,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-[#8a8278]">
+                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-zinc-400">
                         <Building2 className="w-4 h-4" />
                       </div>
                       <input
@@ -297,7 +296,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
 
                   <div>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-[#8a8278]">
+                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-zinc-400">
                         <User2 className="w-4 h-4" />
                       </div>
                       <input
@@ -319,7 +318,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-[#8a8278]">
+                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-zinc-400">
                         <PhoneCall className="w-4 h-4" />
                       </div>
                       <input
@@ -339,7 +338,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
 
                   <div>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-[#8a8278]">
+                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-zinc-400">
                         <Mail className="w-4 h-4" />
                       </div>
                       <input
@@ -365,7 +364,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
                   Detailed Scope or Intent (Optional):
                 </label>
                 <div className="relative">
-                  <div className="absolute top-2.5 left-3 pointer-events-none text-[#8a8278]">
+                  <div className="absolute top-2.5 left-3 pointer-events-none text-zinc-400">
                     <MessageSquare className="w-4 h-4" />
                   </div>
                   <textarea
@@ -391,7 +390,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
                   </>
                 ) : (
                   <>
-                    <span>Submit for 2-Hour SLA Callback</span>
+                    <span>Submit for 24/7 Support Callback</span>
                     <ChevronRight className="w-4 h-4 stroke-[2.5]" />
                   </>
                 )}

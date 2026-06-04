@@ -31,17 +31,17 @@ export default function BrandMascot() {
     timersRef.current.walkTimer = setTimeout(() => {
       setIsWalking(false);
       setMood('confused');
-      setBubbleText('15 invoices? 15 SLAs? Overload! 😵🔌');
+      setBubbleText('15 invoices? 15 separate contracts? Overload! 😵🔌');
 
       // Phase 2: Thinking & Analyzing
       timersRef.current.thinkingTimer = setTimeout(() => {
         setMood('thinking');
-        setBubbleText('Analyzing Pune rates... 🧐⚙️');
+        setBubbleText('Comparing national rates... 🧐⚙️');
 
         // Phase 3: Eureka! Optimized Solution
         timersRef.current.eurekaTimer = setTimeout(() => {
           setMood('eureka');
-          setBubbleText('BusinessBridge active! 1 unified SLA! 🎯✨');
+          setBubbleText('BusinessBridge active! 1 unified contract! 🎯✨');
 
           // Schedule automatic sequence replay (stays in Eureka mode for 30s)
           timersRef.current.loopTimer = setTimeout(() => {
@@ -140,7 +140,7 @@ export default function BrandMascot() {
                   />
                 ))}
               </div>
-              <span className="text-[10px] sm:text-xs font-mono uppercase text-[#e2c06a] tracking-wider font-semibold">Analyzing Pune Rates...</span>
+              <span className="text-[10px] sm:text-xs font-mono uppercase text-[#e2c06a] tracking-wider font-semibold">Comparing National Rates...</span>
             </motion.div>
           )}
 
@@ -346,7 +346,7 @@ export default function BrandMascot() {
                 {/* Golden arched bridge path */}
                 <path d="M 106 172 Q 120 160 134 172" stroke="url(#goldPlateGrad)" strokeWidth="3.25" fill="none" strokeLinecap="round" />
                 <path d="M 101 181 Q 120 173 139 181" stroke="url(#goldPlateGrad)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                {/* SLA columns */}
+                {/* Bridge columns */}
                 <line x1="113" y1="171" x2="113" y2="179" stroke="url(#goldPlateGrad)" strokeWidth="1" />
                 <line x1="120" y1="168" x2="120" y2="177" stroke="url(#goldPlateGrad)" strokeWidth="1" />
                 <line x1="127" y1="171" x2="127" y2="179" stroke="url(#goldPlateGrad)" strokeWidth="1" />

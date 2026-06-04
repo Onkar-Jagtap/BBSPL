@@ -217,10 +217,10 @@ export default function App() {
         <Navbar onOpenPanel={openCategoryInquiry} />
 
         {/* --- MAIN BODY SECTIONS --- */}
-        <main className="flex-1 w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 pt-[96px] lg:pt-[114px] pb-16 space-y-24">
+        <main className="flex-1 w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 pt-[88px] sm:pt-[92px] lg:pt-[96px] pb-16">
           
           {/* SECTION 1: HERO OUTLINE */}
-          <section className="min-h-[85vh] py-10 flex items-center pointer-events-auto">
+          <section className="pt-4 sm:pt-8 pb-3 sm:pb-4 pointer-events-auto">
             <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               {/* Left Column (Hero Content) */}
               <motion.div
@@ -245,8 +245,8 @@ export default function App() {
                   Service.
                 </h1>
 
-                <p className="text-sm sm:text-base md:text-lg text-[#c4beb4] leading-relaxed max-w-lg font-light">
-                  Connecting growing Pune enterprises with 100% verified B2B service providers across technology, IT hardware rentals, recruitment, compliance, and facilities management under a single master SLA.
+                <p className="text-sm sm:text-base md:text-lg text-[#e8e6e2] leading-relaxed max-w-lg font-light">
+                  Connecting growing Indian enterprises with 100% verified B2B service providers across technology, IT hardware rentals, recruitment, compliance, and facilities management under a single master Quality Agreement.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4 flex-wrap">
@@ -281,20 +281,62 @@ export default function App() {
             </div>
           </section>
 
+          {/* CONTINUOUS INFINITE TICKER DIVISION - FULL SCREEN-WIDE & IDEALLY POSITIONED */}
+          <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden py-3 bg-[#0a0a0d]/90 border-y border-[#c9a84c]/15 select-none pointer-events-auto shadow-[0_4px_35px_rgba(0,0,0,0.6)] z-20 mt-4 mb-20">
+            {/* Elegant glass-gilded side fade gradients */}
+            <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-40 bg-gradient-to-r from-[#030305] via-[#030305]/75 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-40 bg-gradient-to-l from-[#030305] via-[#030305]/75 to-transparent z-10 pointer-events-none" />
+            
+            <div className="animate-ticker whitespace-nowrap flex items-center gap-10 text-[9px] sm:text-[10px] font-mono font-bold text-[#e2c06a] uppercase tracking-[0.2em]">
+              <div className="flex items-center gap-10">
+                <span>✨ Verified Partners</span>
+                <span className="text-white/15 select-none">|</span>
+                <span>🤝 All-India Coverage</span>
+                <span className="text-white/15 select-none">|</span>
+                <span>⚡ 24/7 Dedicated Support</span>
+                <span className="text-white/15 select-none">|</span>
+                <span>💎 Transparent Quotes</span>
+                <span className="text-white/15 select-none">|</span>
+                <span>🎯 Trusted Specialists</span>
+                <span className="text-white/15 select-none">|</span>
+                <span>🌟 Zero Markups</span>
+                <span className="text-white/15 select-none">|</span>
+                <span>💼 Nationwide Delivery</span>
+                <span className="text-white/15 select-none">|</span>
+              </div>
+              <div className="flex items-center gap-10" aria-hidden="true">
+                <span>✨ Verified Partners</span>
+                <span className="text-white/15 select-none">|</span>
+                <span>🤝 All-India Coverage</span>
+                <span className="text-white/15 select-none">|</span>
+                <span>⚡ 24/7 Dedicated Support</span>
+                <span className="text-white/15 select-none">|</span>
+                <span>💎 Transparent Quotes</span>
+                <span className="text-white/15 select-none">|</span>
+                <span>🎯 Trusted Specialists</span>
+                <span className="text-white/15 select-none">|</span>
+                <span>🌟 Zero Markups</span>
+                <span className="text-white/15 select-none">|</span>
+                <span>💼 Nationwide Delivery</span>
+                <span className="text-white/15 select-none">|</span>
+              </div>
+            </div>
+          </div>
+
           {/* SECTION 2: BENTO SERVICES GRID */}
           <section id="services" className="space-y-12 scroll-mt-24 pointer-events-auto">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-4">
               <div>
                 <span className="text-[10px] sm:text-xs font-mono font-bold text-[#e1b439] tracking-[0.25em] h-5 block uppercase">
-                  Our Vetted Capabilities
+                  Our Verified Capabilities
                 </span>
                 <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-4xl sm:text-5xl md:text-6xl text-white font-light mt-1 leading-tight">
-                  10 Unified Verticals. <br />
+                  10 Service Categories. <br />
                   <span className="italic text-[#e2c06a]">100+ Premium Services.</span>
                 </h2>
               </div>
-              <p className="text-xs text-[#8a8278] max-w-md leading-relaxed md:pb-2">
-                We manage service levels meticulously. Select any sector below to specify targets, download contracts, or view certified operational vendors ready for Pune operations.
+              <p className="text-xs text-[#e8e6e2] max-w-md leading-relaxed md:pb-2 font-light">
+                We manage service levels meticulously. Select any sector below to specify targets, download contracts, or view certified operational vendors ready for your nationwide operations.
               </p>
             </div>
 
@@ -317,7 +359,7 @@ export default function App() {
                       {getCategoryIconComponent(svc.category)}
                     </div>
                     <div className="w-7 h-7 rounded-full bg-white/[0.02] flex items-center justify-center border border-white/[0.05] group-hover:bg-[#c9a84c] group-hover:border-[#c9a84c] group-hover:-rotate-45 transition-all duration-400">
-                      <ArrowRight className="w-3.5 h-3.5 text-[#8a8278] group-hover:text-[#030305] transition-colors" />
+                      <ArrowRight className="w-3.5 h-3.5 text-zinc-300 group-hover:text-[#030305] transition-colors" />
                     </div>
                   </div>
 
@@ -325,7 +367,7 @@ export default function App() {
                     {svc.category}
                   </h3>
                   
-                  <p className="text-xs text-[#c4beb4] leading-relaxed mb-6 flex-1 font-light">
+                  <p className="text-xs text-[#e5e2dd] leading-relaxed mb-6 flex-1 font-light">
                     {svc.shortDesc}
                   </p>
 
@@ -339,24 +381,24 @@ export default function App() {
           </section>
 
           {/* SECTION 3: HOW WE WORK */}
-          <section id="why" className="space-y-16 scroll-mt-24 pointer-events-auto">
+          <section id="why" className="space-y-16 scroll-mt-24 pointer-events-auto mt-24 sm:mt-32">
             <div className="max-w-xl space-y-3">
               <span className="text-[10px] sm:text-xs font-mono font-bold text-[#e1b439] tracking-[0.25em] uppercase">
                 Managed Partnership
               </span>
               <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-4xl sm:text-5xl text-white font-light leading-[1.1]">
                 We Don't Just Sell Services. <br />
-                <span className="italic text-[#e2c06a]">We Orchestrate Solutions.</span>
+                <span className="italic text-[#e2c06a]">We Simplify Solutions.</span>
               </h2>
-              <p className="text-xs text-[#c4beb4] leading-relaxed">
-                We find elite solutions at direct-contractor rates. When you request any corporate service, we source side-by-side quotations from our pre-vetted Pune network. You select your preferred bid, and we earn a referral commission directly from the supplier. Absolutely zero markup or fees passed on to your business.
+              <p className="text-xs text-[#e8e6e2] leading-relaxed">
+                We find elite solutions at direct-contractor rates. When you request any corporate service, we source side-by-side quotations from our pre-approved national network. You select your preferred bid, and we earn a referral commission directly from the supplier. Absolutely zero markup or fees passed on to your business.
               </p>
             </div>            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 { step: '01', title: 'Submit Request', desc: 'Submit specifications for your required service—whether technology development, IT rentals, facility setup, or security staff.' },
                 { step: '02', title: 'Direct Partner Quotes', desc: 'We deliver clear, side-by-side quotations directly from our accredited local partners at their authentic, standard industry pricing.' },
                 { step: '03', title: 'Select Your Match', desc: 'Review the bids and pick the partner that fits your operational budget, delivery targets, or rating preference perfectly.' },
-                { step: '04', title: 'Free SLA Guarantee', desc: "We oversee the contract and enforce active service level agreements. Our fee is covered entirely via the vendor's commission percentage." }
+                { step: '04', title: 'Free Quality Guarantee', desc: "We oversee the contract and enforce active service quality agreements. Our fee is covered entirely via the vendor's commission percentage." }
               ].map((step, idx) => (
                 <div 
                   key={idx}
@@ -368,7 +410,7 @@ export default function App() {
                   <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mb-2 font-head">
                     {step.title}
                   </h4>
-                  <p className="text-[11px] sm:text-xs text-[#c4beb4] leading-relaxed font-light">
+                  <p className="text-[11px] sm:text-xs text-[#e5e2dd] leading-relaxed font-light">
                     {step.desc}
                   </p>
                 </div>
@@ -377,20 +419,20 @@ export default function App() {
           </section>
   
           {/* SECTION 4: COUNTER STATS COHORT */}
-          <section className="pointer-events-auto glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden">
+          <section className="pointer-events-auto glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden mt-24 sm:mt-32">
             <div className="absolute inset-0 bg-gradient-to-br from-[#c9a84c]/[0.02] via-transparent to-transparent opacity-50" />
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 relative z-10 text-center">
               {[
-                { target: 10, suffix: '', lbl: 'Unified Verticals' },
+                { target: 10, suffix: '', lbl: 'Service Categories' },
                 { target: 100, suffix: '+', lbl: 'Verified Services' },
                 { target: 1, suffix: '', lbl: 'Unified Invoice' },
-                { target: 2, suffix: '-Hour', lbl: 'SLA Response Guarantee' }
+                { target: 24, suffix: '/7', lbl: 'Active Customer Support' }
               ].map((stat, i) => (
                 <div key={i} className="space-y-1.5">
                   <div className="font-serif font-light text-3xl sm:text-4xl lg:text-4xl text-[#e2c06a] leading-none">
                     <AnimatedCounter target={stat.target} suffix={stat.suffix} />
                   </div>
-                  <div className="text-[10px] font-bold uppercase text-[#8a8278] tracking-[0.15em] font-head">
+                  <div className="text-[10px] font-bold uppercase text-[#bcbab4] tracking-[0.15em] font-head">
                     {stat.lbl}
                   </div>
                 </div>
@@ -399,20 +441,20 @@ export default function App() {
           </section>
 
           {/* SECTION 5: CLIENT TESTIMONIALS */}
-          <section className="space-y-12 pointer-events-auto select-none">
+          <section className="space-y-12 pointer-events-auto select-none mt-24 sm:mt-32">
             <div className="text-center max-w-xl mx-auto space-y-2">
               <span className="text-[10px] sm:text-xs font-mono font-bold text-[#e1b439] tracking-[0.25em] uppercase">
                 Accredited Testimonials
               </span>
               <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl sm:text-4xl md:text-5xl text-white font-light">
-                What Pune Enterprises <br />
+                What Indian Businesses <br />
                 <span className="italic text-[#e2c06a]">Say About Us</span>
               </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="glass-card p-8 rounded-2xl">
-                <p className="text-xs sm:text-sm text-[#c4beb4] leading-relaxed italic font-light">
+                <p className="text-xs sm:text-sm text-[#e8e6e2] leading-relaxed italic font-light">
                   "BusinessBridge saved us weeks of redundant tender documentation and supplier sourcing. IT software infrastructure, Facility operations, and physical building security — all aggregated transparently under one managed agreement."
                 </p>
                 <div className="mt-6 flex items-center gap-3">
@@ -421,13 +463,13 @@ export default function App() {
                   </div>
                   <div>
                     <h4 className="text-[11px] font-bold font-head uppercase tracking-wider text-white">Rajesh Kumar</h4>
-                    <p className="text-[9px] text-[#8a8278] font-light">Director of Operations, TechCorp Pune</p>
+                    <p className="text-[9px] text-[#bcbab4] font-light">Director of Operations, TechCorp India</p>
                   </div>
                 </div>
               </div>
 
               <div className="glass-card p-8 rounded-2xl">
-                <p className="text-xs sm:text-sm text-[#c4beb4] leading-relaxed italic font-light">
+                <p className="text-xs sm:text-sm text-[#e8e6e2] leading-relaxed italic font-light">
                   "Our legal audits and ISO standard certification targets through BusinessBridge was exceptionally prompt. Their verified attorney network handled trademark applications, internal controls documentation, and compliance filings within timeline limits."
                 </p>
                 <div className="mt-6 flex items-center gap-3">
@@ -436,7 +478,7 @@ export default function App() {
                   </div>
                   <div>
                     <h4 className="text-[11px] font-bold font-head uppercase tracking-wider text-white">Priya Mehta</h4>
-                    <p className="text-[9px] text-[#8a8278] font-light">Managing Director, Precision Engineering Ltd.</p>
+                    <p className="text-[9px] text-[#bcbab4] font-light">Managing Director, Precision Engineering Ltd.</p>
                   </div>
                 </div>
               </div>
@@ -444,7 +486,7 @@ export default function App() {
           </section>
 
           {/* SECTION 6: FAQ ACCORDION */}
-          <section id="faq" className="space-y-12 scroll-mt-24 pointer-events-auto">
+          <section id="faq" className="space-y-12 scroll-mt-24 pointer-events-auto mt-24 sm:mt-32">
             <div className="max-w-xl mx-auto text-center space-y-2">
               <span className="text-[10px] sm:text-xs font-mono font-bold text-[#e1b439] tracking-[0.25em] uppercase">
                 Information Board
@@ -491,7 +533,7 @@ export default function App() {
                             transition={{ duration: 0.35, ease: 'easeInOut' }}
                           >
                             <div className="px-5 pb-5 pt-1.5 border-t border-white/[0.02]">
-                              <p className="text-xs text-[#8a8278] leading-relaxed font-light">
+                              <p className="text-xs text-[#bcbab4] leading-relaxed font-light">
                                 {q.answer}
                               </p>
                             </div>
@@ -538,7 +580,7 @@ export default function App() {
                             transition={{ duration: 0.35, ease: 'easeInOut' }}
                           >
                             <div className="px-5 pb-5 pt-1.5 border-t border-white/[0.02]">
-                              <p className="text-xs text-[#8a8278] leading-relaxed font-light">
+                              <p className="text-xs text-[#bcbab4] leading-relaxed font-light">
                                 {q.answer}
                               </p>
                             </div>
@@ -566,8 +608,8 @@ export default function App() {
                   Business<span className="text-[#e2c06a] font-normal italic">Bridge</span>
                 </span>
               </div>
-              <p className="text-[10px] text-[#8a8278] leading-relaxed font-light max-w-xs">
-                BusinessBridge is the single consolidated billing, vetting, and management partner for cross-category B2B service integration across Maharashtra and beyond.
+              <p className="text-[10px] text-[#bcbab4] leading-relaxed font-light max-w-xs">
+                BusinessBridge is the single consolidated billing, vetting, and management partner for cross-category B2B service integration serving enterprise partners nationwide.
               </p>
             </div>
 
@@ -575,7 +617,7 @@ export default function App() {
               <h4 className="text-[10px] font-mono font-bold uppercase text-[#e2c06a] tracking-wider">
                 Services Directory
               </h4>
-              <ul className="space-y-1.5 text-[10px] text-[#c4beb4] font-light">
+              <ul className="space-y-1.5 text-[10px] text-[#e5e2dd] font-light">
                 <li><button onClick={() => openCategoryInquiry('Technology & Digital Solutions')} className="hover:text-[#e2c06a] transition-colors cursor-pointer text-left">Technology & Digital Solutions</button></li>
                 <li><button onClick={() => openCategoryInquiry('IT Hardware & Equipment Rentals')} className="hover:text-[#e2c06a] transition-colors cursor-pointer text-left">IT Hardware & Equipment Rentals</button></li>
                 <li><button onClick={() => openCategoryInquiry('Workforce & Admin Solutions')} className="hover:text-[#e2c06a] transition-colors cursor-pointer text-left">Workforce & Admin Solutions</button></li>
@@ -588,9 +630,9 @@ export default function App() {
               <h4 className="text-[10px] font-mono font-bold uppercase text-[#e2c06a] tracking-wider">
                 Enterprise
               </h4>
-              <ul className="space-y-1.5 text-[10px] text-[#c4beb4] font-light">
+              <ul className="space-y-1.5 text-[10px] text-[#e5e2dd] font-light">
                 <li><a href="#services" className="hover:text-[#e2c06a] transition-colors">Our Services</a></li>
-                <li><a href="#why" className="hover:text-[#e2c06a] transition-colors">Managed SLA</a></li>
+                <li><a href="#why" className="hover:text-[#e2c06a] transition-colors">Quality Guarantee</a></li>
                 <li><a href="#faq" className="hover:text-[#e2c06a] transition-colors">Support FAQ</a></li>
                 <li><button onClick={() => openCategoryInquiry('partner')} className="hover:text-[#e2c06a] transition-colors cursor-pointer">Become a Partner</button></li>
               </ul>
@@ -598,17 +640,17 @@ export default function App() {
 
             <div className="space-y-3">
               <h4 className="text-[10px] font-mono font-bold uppercase text-[#e2c06a] tracking-wider">
-                 Pune Headquarters
+                 Pune HQ & National Hub
               </h4>
-              <ul className="space-y-2 text-[10px] text-[#8a8278] font-light">
-                <li className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5 text-[#e2c06a] flex-shrink-0" /> Shivaji Nagar Core, Pune, MH</li>
+              <ul className="space-y-2 text-[10px] text-[#bcbab4] font-light">
+                <li className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5 text-[#e2c06a] flex-shrink-0" /> Shivaji Nagar Core, Pune, MH (Serving All-India)</li>
                 <li className="flex items-center gap-2"><Phone className="w-3.5 h-3.5 text-[#e2c06a] flex-shrink-0" /> +91 20 4919 XXXXX</li>
                 <li className="flex items-center gap-2"><Mail className="w-3.5 h-3.5 text-[#e2c06a] flex-shrink-0" /> info@businessbridge.in</li>
               </ul>
             </div>
           </div>
 
-          <div className="max-w-[1440px] mx-auto mt-12 pt-6 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-4 text-[9px] text-[#8a8278] font-light font-mono">
+          <div className="max-w-[1440px] mx-auto mt-12 pt-6 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-4 text-[9px] text-[#bcbab4] font-light font-mono">
             <span>© 2026 BusinessBridge Solutions Private Limited. All corporate rights reserved.</span>
             <div className="flex flex-wrap gap-4">
               <span>CIN: U74999MH2026PTC000000</span>

@@ -17,7 +17,7 @@ export default function ChatbotWidget({ onOpenCategory }: ChatbotWidgetProps) {
     {
       id: 'msg-initial-welcome',
       sender: 'bot',
-      text: "👋 Welcome to BusinessBridge! I am your **B2B Service Concierge**. We consolidate technology, compliance, facility management, and workforce needs with vetted Pune providers into a single point of billing.\n\nWhat requirement can we solve for your enterprise today?",
+      text: "👋 Welcome to BusinessBridge! I am your **B2B Service Concierge**. We consolidate technology, compliance, facility management, and workforce needs under a single point of billing with verified Indian providers serving nationwide.\n\nWhat requirement can we solve for your enterprise today?",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       suggestedAnswers: [
         '💻 Tech & AI Solutions',
@@ -92,7 +92,7 @@ export default function ChatbotWidget({ onOpenCategory }: ChatbotWidgetProps) {
       setIsTyping(false);
       addMessage(
         'bot',
-        'I apologize! Our Pune servers encountered a brief compliance validation check. You can request a callback directly using the **Free Quote** button at the top header, and our SLA is fully operational.'
+        'I apologize! Our central servers encountered a brief compliance validation check. You can request a callback directly using the **Free Quote** button at the top header, and our service quality guarantee is active and fully operational.'
       );
     }
   };
@@ -191,7 +191,7 @@ export default function ChatbotWidget({ onOpenCategory }: ChatbotWidgetProps) {
                   <Sparkles className="w-3 h-3 text-[#e2c06a] animate-pulse" />
                 </h4>
                 <p className="text-[9px] text-[#e2c06a] tracking-normal font-mono">
-                  Online B2B Advisor · Pune
+                  Online B2B Advisor · National Hub
                 </p>
               </div>
             </div>
@@ -245,7 +245,7 @@ export default function ChatbotWidget({ onOpenCategory }: ChatbotWidgetProps) {
                 </div>
                 
                 {/* Message Timestamp */}
-                <span className="text-[8px] text-[#8a8278] mt-1 pr-1 font-mono">
+                <span className="text-[8px] text-zinc-400 mt-1 pr-1 font-mono">
                   {msg.timestamp}
                 </span>
 
@@ -268,7 +268,7 @@ export default function ChatbotWidget({ onOpenCategory }: ChatbotWidgetProps) {
 
             {/* Simulated AI Typing bubble */}
             {isTyping && (
-              <div className="flex items-center gap-2 text-[#8a8278] text-xs pl-2 bg-white/[0.02] py-2 px-3 rounded-xl max-w-max border border-white/[0.04]">
+              <div className="flex items-center gap-2 text-zinc-300 text-xs pl-2 bg-white/[0.02] py-2 px-3 rounded-xl max-w-max border border-white/[0.04]">
                 <div className="flex gap-1">
                   <span className="w-1.5 h-1.5 bg-[#e2c06a] rounded-full animate-bounce [animation-delay:-0.3s]" />
                   <span className="w-1.5 h-1.5 bg-[#e2c06a] rounded-full animate-bounce [animation-delay:-0.15s]" />
@@ -292,7 +292,7 @@ export default function ChatbotWidget({ onOpenCategory }: ChatbotWidgetProps) {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               disabled={isTyping}
-              className="flex-1 bg-white/[0.03] border border-white/[0.08] focus:border-[#c9a84c] rounded-xl px-3 py-2 text-white placeholder-[#8a8278] text-xs outline-none transition-colors disabled:opacity-50"
+              className="flex-1 bg-white/[0.03] border border-white/[0.08] focus:border-[#c9a84c] rounded-xl px-3 py-2 text-white placeholder-zinc-500 text-xs outline-none transition-colors disabled:opacity-50"
             />
             <button
               type="submit"

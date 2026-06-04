@@ -67,13 +67,13 @@ const B2B_FALLBACK_ANSWERS: Record<string, string> = {
   general: "Greetings from BusinessBridge B2B Concierge! I can assist you with outsourcing requirements across Technology, IT Hardware Rentals, Workforce & Admin Solutions, Finance, Legal & Consulting, Marketing, Office Interiors, Facilities, Security, Logistics, food service and Industrial operations. Which sector can we compare quotes for you today?",
   technology: "For Technology & Digital Solutions, BusinessBridge delivers end-to-end custom Software Development, custom AI pipelines, cloud architecture services, and corporate IT support helpdesks. Would you like to request an expedited callback?",
   rentals: "Our IT Hardware & Equipment Rentals division manages premium enterprise laptop leases, desktops, servers, and printer fleets with rapid on-site replacement guarantees. What is your estimated hardware requirement scope?",
-  workforce: "Our Workforce & Admin Solutions vertical manages executive recruitment, contract staffing, receptionist provisions, data entry operations, paper records digitization, and office consumables supply. Please tell me your staffing scope so I can structure a contract proposal.",
+  workforce: "Our Workforce & Admin Solutions division manages executive recruitment, contract staffing, receptionist provisions, data entry operations, paper records digitization, and office consumables supply. Please tell me your staffing scope so I can structure a contract proposal.",
   finance: "Under Finance, Legal & Consulting, we coordinate certified accounting, fractional CFO advisory, GST filings, trademark application, ISO certification audits, and process improvement consulting.",
   marketing: "Under Marketing & Brand Solutions, we engineer performance marketing models, search indexing (SEO), graphic branding guidelines, video/photo editing, printing, and custom corporate gifts. What are your client acquisition targets?",
   office: "For Office Interiors & Space Setup, we design layout visual blueprints, perform fit-out constructions, and supply ergonomic workstations & media room audio-video equipment.",
-  facility: "Our Facility, Housekeeping & Security vertical coordinates physical premises integrity, AC/electrical/plumbing engineering audits, deep workspace cleaning, remote AI-assisted CCTV video hubs, and certified security guard units under a single consolidated SLA.",
+  facility: "Our Facility, Housekeeping & Security division manages physical premises integrity, AC/electrical/plumbing engineering audits, deep workspace cleaning, remote AI-assisted CCTV video hubs, and certified security guard units under a single consolidated quality guarantee.",
   logistics: "Our Logistics & Freight Services division manages secure warehouse storage operations, multi-modal container truck cargo freight, last-mile delivery lanes, and secure courier legal envelope dispatches.",
-  food: "Our Food, Pantry & Wellness vertical manages daily corporate employee breakfast/lunch catering, coffee machine programs, snacks delivery, routine water RO maintenance, and preventative employee medical checkups.",
+  food: "Our Food, Pantry & Wellness division manages daily corporate employee breakfast/lunch catering, coffee machine programs, snacks delivery, routine water RO maintenance, and preventative employee medical checkups.",
   manufacturing: "Under Manufacturing & Industrial Services, we coordinate CNC contract machining, specialized metal welding/fabrication fabrication, large cargo packaging solutions, and accredited quality controllers."
 };
 
@@ -114,7 +114,7 @@ app.post('/api/inquire', (req, res) => {
     return res.status(200).json({
       success: true,
       id: newLead.id,
-      message: 'Your inquiry has been cataloged systematically. Our standard 2-hour callback SLA has officially initiated.'
+      message: 'Your inquiry has been cataloged systematically. Our standard 24/7 support active priority response has officially initiated.'
     });
   } catch (err: any) {
     console.error('[ERROR] Exception raised inside /api/inquire handler:', err);
@@ -140,7 +140,7 @@ app.post('/api/chat', async (req, res) => {
 
     // Context System Instructions (guides Gemini on tone, limits, and BusinessBridge specifics)
     const systemPrompt = `You are "BusinessBridge Concierge", a highly polished, professional B2B advisory assistant representing BusinessBridge solutions.
-We operate across 10 major consolidated enterprise categories representing all enterprise support verticals:
+We operate across 10 major consolidated enterprise categories representing all enterprise support sectors:
 1. Technology & Digital Solutions (custom software development, custom AI automated pipelines, website/mobile engineering, cloud architecture, cybersecurity)
 2. IT Hardware & Equipment Rentals (premium enterprise laptop fleet rentals, workstations, server setups, printer fleet leasing)
 3. Workforce & Admin Solutions (placement, contract staffing, payroll processing, bg check, admin reception, documentation, office procurement, uniforms)
@@ -154,9 +154,9 @@ We operate across 10 major consolidated enterprise categories representing all e
 
 Our Core Value Propositions:
 - Single point of consolidated communication (Eliminates calling 20 different vendors).
-- Guaranteed 2-Hour callback promise SLA during standard business hours.
+- Guaranteed 24/7 support setup & round-the-clock callback promise.
 - Our Revenue Model: Absolutely zero markups on quotations! We deliver authentic partner price quotes directly to the user to choose from. Our business generates revenue entirely through a match commission percentage paid directly by the selected supplier / vendor.
-- Located in Pune, Maharashtra, operating across major cities (Pune, Mumbai, Bangalore, Gurgaon).
+- Located in Pune, Maharashtra, serving enterprise operations nationwide across major Indian cities (Pune, Mumbai, Bangalore, Gurgaon, NCR).
 
 Your Tone:
 Professional, reassuring, crisp, elite, and business-focused. Avoid excessive emojis (less is more). Address the user as a corporate client/partner.
@@ -275,7 +275,7 @@ Guidelines:
     console.error('[CRITICAL_ERROR] Gemini API Chat invocation threw exception:', err);
     // Graceful error fallback response so user is never stalled
     return res.json({
-      text: "I apologize, our automated neural concierge is currently experiencing heavier call volumes. To proceed instantly, click 'Request a Free Quote' above or dial our Pune headquarters directly. We promise to address your requirements perfectly.",
+      text: "I apologize, our automated neural concierge is currently experiencing heavier call volumes. To proceed instantly, click 'Request a Free Quote' above or dial our headquarters directly. We promise to address your requirements perfectly.",
       promptQuoteWithCategory: undefined
     });
   }
