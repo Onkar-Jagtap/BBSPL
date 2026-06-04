@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Laptop, 
+  Monitor,
   Users, 
   Scale, 
   Building, 
@@ -21,7 +22,11 @@ import {
   MapPin, 
   Mail, 
   Compass, 
-  Grid
+  Grid,
+  LayoutGrid,
+  Truck,
+  Heart,
+  Wrench
 } from 'lucide-react';
 import { SERVICES_LIST, GENERAL_QUESTIONS, ServiceCategory } from './types';
 import BackgroundCanvas from './components/BackgroundCanvas';
@@ -29,7 +34,7 @@ import Navbar from './components/Navbar';
 import ServiceModal from './components/ServiceModal';
 import ChatbotWidget from './components/ChatbotWidget';
 import AnimatedCounter from './components/AnimatedCounter';
-import SparkCursor from './components/SparkCursor';
+import BrandMascot from './components/BrandMascot';
 
 export default function App() {
   // Navigation & Panel overlays state
@@ -103,18 +108,26 @@ export default function App() {
   // Maps category icons dynamically to React lucide layouts
   const getCategoryIconComponent = (cat: ServiceCategory) => {
     switch (cat) {
-      case 'Technology & Digital':
+      case 'Technology & Digital Solutions':
         return <Laptop className="w-6 h-6 text-[#e2c06a]" />;
-      case 'HR & Workforce':
+      case 'IT Hardware & Equipment Rentals':
+        return <Monitor className="w-6 h-6 text-[#e2c06a]" />;
+      case 'Workforce & Admin Solutions':
         return <Users className="w-6 h-6 text-[#e2c06a]" />;
-      case 'Finance & Legal':
+      case 'Finance, Legal & Consulting':
         return <Scale className="w-6 h-6 text-[#e2c06a]" />;
-      case 'Facility Management':
-        return <Building className="w-6 h-6 text-[#e2c06a]" />;
-      case 'Security & Surveillance':
-        return <ShieldCheck className="w-6 h-6 text-[#e2c06a]" />;
-      case 'Marketing & Brand':
+      case 'Marketing & Brand Solutions':
         return <Megaphone className="w-6 h-6 text-[#e2c06a]" />;
+      case 'Office Interiors & Space Setup':
+        return <LayoutGrid className="w-6 h-6 text-[#e2c06a]" />;
+      case 'Facility, Housekeeping & Security':
+        return <Building className="w-6 h-6 text-[#e2c06a]" />;
+      case 'Logistics & Freight Services':
+        return <Truck className="w-6 h-6 text-[#e2c06a]" />;
+      case 'Food, Pantry & Wellness':
+        return <Heart className="w-6 h-6 text-[#e2c06a]" />;
+      case 'Manufacturing & Industrial Services':
+        return <Wrench className="w-6 h-6 text-[#e2c06a]" />;
     }
   };
 
@@ -123,8 +136,43 @@ export default function App() {
       {/* Background WebGL / Gradient Fallback Canvas */}
       <BackgroundCanvas />
 
-      {/* Smooth Spark Custom Chasing Cursor */}
-      <SparkCursor />
+      {/* Lagging Custom Cursor Aesthetics (Hidden on touch devices) */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '5px',
+          height: '5px',
+          backgroundColor: '#e2c06a',
+          borderRadius: '50%',
+          transform: `translate3d(${mousePos.x - 2.5}px, ${mousePos.y - 2.5}px, 0)`,
+          pointerEvents: 'none',
+          zIndex: 9999,
+          boxShadow: '0 0 10px #c9a84c',
+          display: 'none',
+        }}
+        className="pointer-events-none md:block"
+      />
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: isHovered ? '70px' : '40px',
+          height: isHovered ? '70px' : '40px',
+          borderRadius: '50%',
+          border: isHovered ? '1px solid transparent' : '1px solid rgba(201, 168, 76, 0.4)',
+          backgroundColor: isHovered ? 'rgba(201, 168, 76, 0.05)' : 'transparent',
+          backdropFilter: isHovered ? 'blur(2px)' : 'none',
+          transform: `translate3d(${ringPos.x}px, ${ringPos.y}px, 0) translate(-50%, -50%)`,
+          pointerEvents: 'none',
+          zIndex: 9998,
+          transition: 'width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s, backdrop-filter 0.3s',
+          display: 'none',
+        }}
+        className="pointer-events-none md:block"
+      />
 
       {/* UI Interface Overlay Wrapper */}
       <div className="relative z-10 w-full min-h-screen flex flex-col">
@@ -136,52 +184,65 @@ export default function App() {
         <main className="flex-1 w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 pt-32 pb-16 space-y-24">
           
           {/* SECTION 1: HERO OUTLINE */}
-          <section className="min-h-[85vh] flex flex-col justify-center py-10 pointer-events-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-6 max-w-3xl"
-            >
-              <div className="inline-flex items-center gap-3.5 bg-white/[0.02] border border-white/[0.06] rounded-full px-4 py-1.5 text-xs text-[#e2c06a] font-semibold uppercase tracking-[0.2em]">
-                <Sparkles className="w-3.5 h-3.5 stroke-[2] text-[#e2c06a]" />
-                B2B Service Concierge
-              </div>
-
-              <h1 
-                style={{ fontFamily: "'Cormorant Garamond', serif" }} 
-                className="text-4xl sm:text-6xl md:text-7xl font-light leading-[1] tracking-tight text-white"
+          <section className="min-h-[85vh] py-10 flex items-center pointer-events-auto">
+            <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              {/* Left Column (Hero Content) */}
+              <motion.div
+                initial={{ opacity: 0, x: -45 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                className="space-y-6 lg:col-span-7"
               >
-                One Partner for <br />
-                <span className="italic bg-gradient-to-r from-[#c9a84c] via-[#e2c06a] to-white bg-clip-text text-transparent">
-                  Every Business
-                </span> <br />
-                Service.
-              </h1>
+                <div className="inline-flex items-center gap-3.5 bg-white/[0.02] border border-white/[0.06] rounded-full px-4 py-1.5 text-xs text-[#e2c06a] font-semibold uppercase tracking-[0.2em]">
+                  <Sparkles className="w-3.5 h-3.5 stroke-[2] text-[#e2c06a]" />
+                  B2B Service Concierge
+                </div>
 
-              <p className="text-sm sm:text-base md:text-lg text-[#c4beb4] leading-relaxed max-w-lg font-light">
-                Connecting growing enterprises with verified B2B service providers across technology, workforce recruitment, facilities management, and statutory audit audits through a single, consolidated portal.
-              </p>
+                <h1 
+                  style={{ fontFamily: "'Cormorant Garamond', serif" }} 
+                  className="text-4xl sm:text-6xl md:text-7xl font-light leading-[1.1] tracking-tight text-white"
+                >
+                  One Partner for <br />
+                  <span className="italic bg-gradient-to-r from-[#c9a84c] via-[#e2c06a] to-white bg-clip-text text-transparent">
+                    Every Business
+                  </span> <br />
+                  Service.
+                </h1>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-4 flex-wrap">
-                <button
-                  onClick={() => openCategoryInquiry('quote')}
-                  className="px-6 py-4 bg-[#c9a84c] rounded-lg text-[#030305] font-bold text-xs uppercase tracking-wider hover:bg-[#e2c06a] hover:shadow-[0_0_25px_rgba(201,168,76,0.35)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  Request a Free Quote
-                  <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-                </button>
-                <button
-                  onClick={() => {
-                    const el = document.getElementById('services');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-6 py-4 border border-white/10 bg-white/[0.02] hover:bg-white/[0.06] hover:border-[#c9a84c]/20 text-white rounded-lg font-semibold text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer"
-                >
-                  Explore Capabilities
-                </button>
-              </div>
-            </motion.div>
+                <p className="text-sm sm:text-base md:text-lg text-[#c4beb4] leading-relaxed max-w-lg font-light">
+                  Connecting growing Pune enterprises with 100% verified B2B service providers across technology, IT hardware rentals, recruitment, compliance, and facilities management under a single master SLA.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 pt-4 flex-wrap">
+                  <button
+                    onClick={() => openCategoryInquiry('quote')}
+                    className="px-6 py-4 bg-[#c9a84c] rounded-lg text-[#030305] font-bold text-xs uppercase tracking-wider hover:bg-[#e2c06a] hover:shadow-[0_0_25px_rgba(201,168,76,0.35)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    Request a Free Quote
+                    <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById('services');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="px-6 py-4 border border-white/10 bg-white/[0.02] hover:bg-white/[0.06] hover:border-[#c9a84c]/20 text-white rounded-lg font-semibold text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer"
+                  >
+                    Explore Capabilities
+                  </button>
+                </div>
+              </motion.div>
+
+              {/* Right Column (Confused/Eureka Mascot Visual) */}
+              <motion.div
+                initial={{ opacity: 0, x: 45 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="lg:col-span-5 flex justify-center items-center relative"
+              >
+                <BrandMascot />
+              </motion.div>
+            </div>
           </section>
 
           {/* SECTION 2: BENTO SERVICES GRID */}
@@ -191,9 +252,9 @@ export default function App() {
                 <span className="text-[10px] sm:text-xs font-mono font-bold text-[#e1b439] tracking-[0.25em] h-5 block uppercase">
                   Our Vetted Capabilities
                 </span>
-                <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-4xl sm:text-5xl md:text-6xl text-white font-light mt-1">
-                  17 Categories. <br />
-                  <span className="italic text-[#e2c06a]">Click to Inquire.</span>
+                <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-4xl sm:text-5xl md:text-6xl text-white font-light mt-1 leading-tight">
+                  10 Unified Verticals. <br />
+                  <span className="italic text-[#e2c06a]">100+ Premium Services.</span>
                 </h2>
               </div>
               <p className="text-xs text-[#8a8278] max-w-md leading-relaxed md:pb-2">
@@ -286,7 +347,7 @@ export default function App() {
             <div className="absolute inset-0 bg-gradient-to-br from-[#c9a84c]/[0.01] via-transparent to-transparent" />
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 relative z-10 text-center">
               {[
-                { target: 17, suffix: '', lbl: 'Niche Verticals' },
+                { target: 10, suffix: '', lbl: 'Unified Verticals' },
                 { target: 100, suffix: '+', lbl: 'Verified Services' },
                 { target: 1, suffix: '', lbl: 'Unified Invoice' },
                 { target: 2, suffix: '-Hour', lbl: 'SLA Response Guarantee' }
@@ -360,49 +421,100 @@ export default function App() {
               </h2>
             </div>
 
-            <div className="max-w-3xl mx-auto space-y-3">
-              {GENERAL_QUESTIONS.map((q, idx) => {
-                const isOpen = openFaqIdx === idx;
-                return (
-                  <div
-                    key={idx}
-                    className={`border border-white/[0.04] rounded-xl overflow-hidden transition-all duration-500 bg-[#141419]/${isOpen ? '40 border-[#c9a84c]/20' : '15'}`}
-                  >
-                    <button
-                      onClick={() => toggleFaq(idx)}
-                      className="w-full text-left p-5 flex items-center justify-between gap-4 cursor-pointer"
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto items-start">
+              {/* Column 1 (Even index FAQs) */}
+              <div className="space-y-4">
+                {GENERAL_QUESTIONS.map((q, idx) => {
+                  if (idx % 2 !== 0) return null;
+                  const isOpen = openFaqIdx === idx;
+                  return (
+                    <div
+                      key={idx}
+                      className={`border border-white/[0.04] rounded-xl overflow-hidden transition-all duration-500 bg-[#141419]/${isOpen ? '40 border-[#c9a84c]/20 shadow-[0_4px_25px_rgba(201,168,76,0.05)]' : '15'}`}
                     >
-                      <span className="text-[11px] sm:text-xs sm:font-bold font-head uppercase tracking-wider text-[#fcfbf9]">
-                        {q.question}
-                      </span>
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/[0.03] flex items-center justify-center border border-white/[0.06] text-[#c9a84c]">
-                        {isOpen ? (
-                          <span className="text-xs font-semibold select-none leading-none">-</span>
-                        ) : (
-                          <Plus className="w-3.5 h-3.5" />
-                        )}
-                      </span>
-                    </button>
+                      <button
+                        onClick={() => toggleFaq(idx)}
+                        className="w-full text-left p-5 flex items-center justify-between gap-4 cursor-pointer group"
+                      >
+                        <span className="text-[11px] sm:text-xs sm:font-bold font-head uppercase tracking-wider text-[#fcfbf9] transition-colors group-hover:text-[#e2c06a]">
+                          {q.question}
+                        </span>
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/[0.03] flex items-center justify-center border border-white/[0.06] text-[#c9a84c] transition-colors group-hover:border-[#c9a84c]/40">
+                          {isOpen ? (
+                            <span className="text-xs font-semibold select-none leading-none">-</span>
+                          ) : (
+                            <Plus className="w-3.5 h-3.5" />
+                          )}
+                        </span>
+                      </button>
 
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.35, ease: 'easeInOut' }}
-                        >
-                          <div className="px-5 pb-5 pt-1.5 border-t border-white/[0.02]">
-                            <p className="text-xs text-[#8a8278] leading-relaxed font-light">
-                              {q.answer}
-                            </p>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                );
-              })}
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.35, ease: 'easeInOut' }}
+                          >
+                            <div className="px-5 pb-5 pt-1.5 border-t border-white/[0.02]">
+                              <p className="text-xs text-[#8a8278] leading-relaxed font-light">
+                                {q.answer}
+                              </p>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Column 2 (Odd index FAQs) */}
+              <div className="space-y-4">
+                {GENERAL_QUESTIONS.map((q, idx) => {
+                  if (idx % 2 === 0) return null;
+                  const isOpen = openFaqIdx === idx;
+                  return (
+                    <div
+                      key={idx}
+                      className={`border border-white/[0.04] rounded-xl overflow-hidden transition-all duration-500 bg-[#141419]/${isOpen ? '40 border-[#c9a84c]/20 shadow-[0_4px_25px_rgba(201,168,76,0.05)]' : '15'}`}
+                    >
+                      <button
+                        onClick={() => toggleFaq(idx)}
+                        className="w-full text-left p-5 flex items-center justify-between gap-4 cursor-pointer group"
+                      >
+                        <span className="text-[11px] sm:text-xs sm:font-bold font-head uppercase tracking-wider text-[#fcfbf9] transition-colors group-hover:text-[#e2c06a]">
+                          {q.question}
+                        </span>
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/[0.03] flex items-center justify-center border border-white/[0.06] text-[#c9a84c] transition-colors group-hover:border-[#c9a84c]/40">
+                          {isOpen ? (
+                            <span className="text-xs font-semibold select-none leading-none">-</span>
+                          ) : (
+                            <Plus className="w-3.5 h-3.5" />
+                          )}
+                        </span>
+                      </button>
+
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.35, ease: 'easeInOut' }}
+                          >
+                            <div className="px-5 pb-5 pt-1.5 border-t border-white/[0.02]">
+                              <p className="text-xs text-[#8a8278] leading-relaxed font-light">
+                                {q.answer}
+                              </p>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </section>
 
@@ -430,10 +542,11 @@ export default function App() {
                 Services Directory
               </h4>
               <ul className="space-y-1.5 text-[10px] text-[#c4beb4] font-light">
-                <li><button onClick={() => openCategoryInquiry('Technology & Digital')} className="hover:text-[#e2c06a] transition-colors cursor-pointer text-left">Technology & Digital</button></li>
-                <li><button onClick={() => openCategoryInquiry('HR & Workforce')} className="hover:text-[#e2c06a] transition-colors cursor-pointer text-left">HR & Workforce</button></li>
-                <li><button onClick={() => openCategoryInquiry('Finance & Legal')} className="hover:text-[#e2c06a] transition-colors cursor-pointer text-left">Finance & Legal</button></li>
-                <li><button onClick={() => openCategoryInquiry('Facility Management')} className="hover:text-[#e2c06a] transition-colors cursor-pointer text-left">Facility Management</button></li>
+                <li><button onClick={() => openCategoryInquiry('Technology & Digital Solutions')} className="hover:text-[#e2c06a] transition-colors cursor-pointer text-left">Technology & Digital Solutions</button></li>
+                <li><button onClick={() => openCategoryInquiry('IT Hardware & Equipment Rentals')} className="hover:text-[#e2c06a] transition-colors cursor-pointer text-left">IT Hardware & Equipment Rentals</button></li>
+                <li><button onClick={() => openCategoryInquiry('Workforce & Admin Solutions')} className="hover:text-[#e2c06a] transition-colors cursor-pointer text-left">Workforce & Admin Solutions</button></li>
+                <li><button onClick={() => openCategoryInquiry('Finance, Legal & Consulting')} className="hover:text-[#e2c06a] transition-colors cursor-pointer text-left">Finance, Legal & Consulting</button></li>
+                <li><button onClick={() => openCategoryInquiry('Facility, Housekeeping & Security')} className="hover:text-[#e2c06a] transition-colors cursor-pointer text-left">Facility, Housekeeping & Security</button></li>
               </ul>
             </div>
 

@@ -4,23 +4,16 @@
  */
 
 export type ServiceCategory =
-  | 'Technology & Digital'
-  | 'HR & Workforce'
-  | 'Finance & Legal'
-  | 'Facility Management'
-  | 'Security & Surveillance'
-  | 'Marketing & Brand'
-  | 'Logistics & Fleet Commute'
-  | 'Legal Consults & Corporate Secretarial'
-  | 'Catering & Corporate F&B'
-  | 'Sanitization & Pest Hygiene'
-  | 'Corporate Travel & Stays'
-  | 'Bulk Stationery & Custom Printing'
-  | 'Workspace Leasing & Fit-Outs'
-  | 'Gifting & Merchandising'
-  | 'Wellness & Corporate Insurance'
-  | 'ESG, Carbon & Energy Audits'
-  | 'Custom Signage & Branding Displays';
+  | 'Technology & Digital Solutions'
+  | 'IT Hardware & Equipment Rentals'
+  | 'Workforce & Admin Solutions'
+  | 'Finance, Legal & Consulting'
+  | 'Marketing & Brand Solutions'
+  | 'Office Interiors & Space Setup'
+  | 'Facility, Housekeeping & Security'
+  | 'Logistics & Freight Services'
+  | 'Food, Pantry & Wellness'
+  | 'Manufacturing & Industrial Services';
 
 export interface B2BServiceData {
   category: ServiceCategory;
@@ -50,246 +43,206 @@ export interface ChatMessage {
 }
 
 export const CATEGORY_SERVICES: Record<ServiceCategory, string[]> = {
-  'Technology & Digital': [
+  'Technology & Digital Solutions': [
+    'AI Automation',
     'Software Development',
-    'Cloud Architecture & Migration',
-    'Cybersecurity & Auditing',
-    'Corporate IT Support & AMC',
-    'Website & Mobile App Design'
+    'Mobile App Development',
+    'Website Development',
+    'ERP Implementation',
+    'CRM Solutions',
+    'Cloud Services',
+    'Cybersecurity',
+    'Network Infrastructure',
+    'IT Support Services'
   ],
-  'HR & Workforce': [
-    'Executive & Leadership Hiring',
-    'Contractual General Staffing',
-    'Automated Payroll Processing',
-    'Background & Credential Verification',
-    'Corporate Skill Reinforcement'
+  'IT Hardware & Equipment Rentals': [
+    'Laptop Rentals',
+    'Desktop Rentals',
+    'Printer Rentals'
   ],
-  'Finance & Legal': [
-    'Fractional CFO & Advisory',
-    'Company, GST & Trademark Registration',
-    'Indirect Tax Compliance & Filing',
-    'ISO & Quality Standard Certifications',
-    'Corporate Secretarial Audits'
+  'Workforce & Admin Solutions': [
+    'Recruitment & Executive Search',
+    'Contract Staffing',
+    'Temporary Manpower',
+    'Payroll Processing',
+    'Background Verification',
+    'Employee Training',
+    'Employee Engagement Programs',
+    'Reception Staffing',
+    'Virtual Assistants',
+    'Call Center Services',
+    'Data Entry Services',
+    'Document Digitization',
+    'Records Management',
+    'Office Supplies',
+    'Electronics Procurement',
+    'Safety Equipment',
+    'Uniforms',
+    'Stationery',
+    'Printer Consumables'
   ],
-  'Facility Management': [
-    'HVAC & Electro-Mechanical Maintenance',
-    'Plumbing & Plumbing Networks',
-    'Routine & Deep Commercial Cleaning',
-    'Comprehensive Industrial Pest Control',
-    'Eco-conscious Waste Recyclability'
+  'Finance, Legal & Consulting': [
+    'Accounting & Bookkeeping',
+    'CFO-as-a-Service',
+    'Tax & GST Filing',
+    'Company Registration',
+    'Trademark Registration',
+    'Legal Services',
+    'Contract Management',
+    'ISO Certifications',
+    'Compliance Audits',
+    'Business Consulting',
+    'Market Research',
+    'Survey Services',
+    'Mystery Shopping',
+    'Process Improvement Consulting'
   ],
-  'Security & Surveillance': [
-    'Vetted Physical Guard services',
-    'CCTV Infrastructure Deployment',
-    'Active Remote CCTV feeds monitor',
-    'Bio-metric Access Control Setup',
-    'Executive Protection & Concierge security'
+  'Marketing & Brand Solutions': [
+    'Digital Marketing',
+    'SEO',
+    'PPC Advertising',
+    'Social Media Management',
+    'Branding',
+    'Content Writing',
+    'Video Editing',
+    'Photography & Videography',
+    'Corporate Gifts',
+    'Printing & Signage'
   ],
-  'Marketing & Brand': [
-    'Dynamic Social & SEO Campaigns',
-    'Brand Identity & Collateral Design',
-    'Targeted Pay-per-Click Campaigns',
-    'Corporate Video & Staging production',
-    'Premium Corporate Event Planning & Execution'
+  'Office Interiors & Space Setup': [
+    'Office Interior Design',
+    'Fit-Out Projects',
+    'Renovation Services',
+    'Workstations',
+    'Office Furniture',
+    'Conference Room Setup'
   ],
-  'Logistics & Fleet Commute': [
-    'Employee Pick-up & Shuttles',
-    'Enterprise Freight & Road Transport',
-    'Inter-State Warehousing Transfer',
-    'Real-time GPS Fleet Monitoring',
-    'Corporate Courier & Consignment Management'
+  'Facility, Housekeeping & Security': [
+    'Facility Management Contracts',
+    'Electrical Services',
+    'Plumbing Services',
+    'AC Maintenance',
+    'Generator Maintenance',
+    'Lift Maintenance',
+    'Fire Safety Compliance',
+    'Gardening & Landscaping',
+    'Waste Management',
+    'Office Cleaning',
+    'Deep Cleaning',
+    'Washroom Cleaning',
+    'Carpet Cleaning',
+    'Furniture Cleaning',
+    'Pest Control',
+    'Security Guard Services',
+    'CCTV Installation',
+    'CCTV Monitoring',
+    'Access Control Systems',
+    'Visitor Management Systems'
   ],
-  'Legal Consults & Corporate Secretarial': [
-    'SLA & Business Contract Drafting',
-    'Patent & IP Portfolio Management',
-    'Corporate Arbitration & Disputes Resolutions',
-    'Regulatory Licensing Compliance filings',
-    'Due Diligence Audits'
+  'Logistics & Freight Services': [
+    'Freight Services',
+    'Warehousing',
+    'Transportation',
+    'Last-Mile Delivery',
+    'Courier Services',
+    'Document Delivery'
   ],
-  'Catering & Corporate F&B': [
-    'In-House Corporate Kitchen Engineering',
-    'Daily Exec/Staff Buffet Meals',
-    'Pre-packaged Boardroom Lunch boxes',
-    'Automatic Vending Units setup',
-    'Pantry Consumables Supply management'
+  'Food, Pantry & Wellness': [
+    'Corporate Catering',
+    'Event Catering',
+    'Daily Corporate Meals',
+    'Pantry Management',
+    'Refreshment Programs',
+    'Tea & Coffee Vending',
+    'Drinking Water Solutions',
+    'RO Maintenance',
+    'Pantry Supplies',
+    'Snacks & Refreshments',
+    'Health Checkups',
+    'Corporate Gym Partnerships',
+    'On-Site Medical Support',
+    'Mental Wellness Programs'
   ],
-  'Sanitization & Pest Hygiene': [
-    'Deep Structural Termite termination',
-    'Medical-grade Ward Disinfection',
-    'Chemical & Bio-Waste disposal audits',
-    'HEPA Air Filtration deployment',
-    'Commercial Odor-Control systems'
-  ],
-  'Corporate Travel & Stays': [
-    'Bulk Flight & Train Reservations',
-    'Dynamic Luxury Hotel contracts',
-    'Corporate Forex Support concierge',
-    'Expedited Corporate Visa approvals',
-    'Unified Employee Cab Booking platform'
-  ],
-  'Bulk Stationery & Custom Printing': [
-    'High-volume Corporate Printing schedules',
-    'Tailored Files & Ledger Storage supplies',
-    'Paper & Tech Accessories bulk storage',
-    'Bespoke Bound Manuals & notebooks',
-    'Direct-Desk Stationery replenish scheme'
-  ],
-  'Workspace Leasing & Fit-Outs': [
-    'Commercial Office Space Sourcing',
-    'Virtual Corporate Address allocations',
-    'Acoustic-Insulated Drywall layouts',
-    'Ergonomic Modular Desk installations',
-    'Secure Packaging & Logistics Relocations'
-  ],
-  'Gifting & Merchandising': [
-    'Branded Apparel & Promotional materials',
-    'Corporate Executive Leather hampers',
-    'Curated Smart Electronic kits',
-    'Employee IDs & Branded Accessories',
-    'Trophy & Appreciation Plaque carvings'
-  ],
-  'Wellness & Corporate Insurance': [
-    'Group Health Insurance policy grids',
-    'On-site paramedic & Emergency suites',
-    'Daily Mindful & Stress-reflux camps',
-    'Annual Master Health Checkup setups',
-    'Corporate Gym & Club tier affiliations'
-  ],
-  'ESG, Carbon & Energy Audits': [
-    'Greenhouse gas Carbon Accounting audits',
-    'Rooftop Grid Solar Installation plans',
-    'LEED Sustainability Engineering consult',
-    'Certified Electronic Waste destruction',
-    'Smart Energy Consumption monitors'
-  ],
-  'Custom Signage & Branding Displays': [
-    'Lobby 3D Acrylic & Metallic signage',
-    'LED Outdoor light-box banners',
-    'Warehouse Warning & Hazard posters',
-    'Exhibition Retractable standees',
-    'Corporate Signboard Repair & AMC'
+  'Manufacturing & Industrial Services': [
+    'CNC Machining',
+    'Fabrication',
+    'Welding',
+    'Packaging Solutions',
+    'Quality Inspection',
+    'Industrial Manpower'
   ]
 };
 
 export const SERVICES_LIST: B2BServiceData[] = [
   {
-    category: 'Technology & Digital',
+    category: 'Technology & Digital Solutions',
     icon: '💻',
-    shortDesc: 'Software engineering development, cloud computing orchestration, and zero-trust cybersecurity audits.',
-    detailedDesc: 'Empower your enterprise with certified software engineers, rigorous zero-trust compliance standards, and highly resilient cloud orchestration managed on AWS and Google Cloud Platform.',
-    options: CATEGORY_SERVICES['Technology & Digital']
+    shortDesc: 'End-to-end software engineering, custom AI automated pipelines, high-security cloud architecture, and corporate IT support.',
+    detailedDesc: 'Unify your development lifecycle and scale smoothly with certified senior programmers. We manage custom software, mobile apps, website engineering, enterprise ERP/CRM installations, cybersecurity audit parameters, and 24/7 dedicated system helpdesks.',
+    options: CATEGORY_SERVICES['Technology & Digital Solutions']
   },
   {
-    category: 'HR & Workforce',
+    category: 'IT Hardware & Equipment Rentals',
+    icon: '🖥️',
+    shortDesc: 'Flexible workstation leasing contracts, laptop fleet rentals, high-performance desktops, and printer equipment leasing.',
+    detailedDesc: 'Avoid large capital expend and scale your team size up or down dynamically with zero upfront hardware overhead. We supply and manage premium enterprise laptops, high-performance desktops, and industrial printers with prompt on-premise replacement SLAs and full-service repair support included.',
+    options: CATEGORY_SERVICES['IT Hardware & Equipment Rentals']
+  },
+  {
+    category: 'Workforce & Admin Solutions',
     icon: '👥',
-    shortDesc: 'Executive leadership recruitment, contract staffing provisions, and automated payroll operations.',
-    detailedDesc: 'Streamline human resource cycles with premium talent sourcing matching your niche requirements, contractual general staffing solutions, and fully audited, cloud-accessible payroll schedules.',
-    options: CATEGORY_SERVICES['HR & Workforce']
+    shortDesc: 'Executive talent hiring, temporary staffing, automated payroll, virtual assistants, and office consumable management.',
+    detailedDesc: 'Streamline your HR pipeline and day-to-day administrative support overhead with audited recruitment protocols, rapid temp-staffing provisioning, automated payroll execution, records digitization, and prompt deskside office supplies.',
+    options: CATEGORY_SERVICES['Workforce & Admin Solutions']
   },
   {
-    category: 'Finance & Legal',
+    category: 'Finance, Legal & Consulting',
     icon: '⚖️',
-    shortDesc: 'Fractional CFO consulting, professional GST filings, corporate trademark registry, and ISO audit protocols.',
-    detailedDesc: 'Establish rigid financial oversight with seasoned fractional CFO professionals, rapid corporate and intellectual registry filings, tax reconciliation schemes, and standardized audit credentials.',
-    options: CATEGORY_SERVICES['Finance & Legal']
+    shortDesc: 'Bookkeeping, CFO advisory, tax filings, corporate registration, standard legal contracts, and process optimization consulting.',
+    detailedDesc: 'Maintain pristine corporate records and strategic direction using our network of seasoned corporate attorneys and CPA/CA practitioners. We manage tax reconciliations, intellectual property filings, ISO audits, business growth plans, and corporate secretarial tasks.',
+    options: CATEGORY_SERVICES['Finance, Legal & Consulting']
   },
   {
-    category: 'Facility Management',
-    icon: '🏢',
-    shortDesc: 'Complete mechanical maintenance (HVAC & Electrical), commercial plumbing, and deep sanitation.',
-    detailedDesc: 'Preserve commercial asset value via premium mechanical maintenance schedules, expert electrical assessments, deep cleaning sanitization routines, and eco-certified pest controls.',
-    options: CATEGORY_SERVICES['Facility Management']
-  },
-  {
-    category: 'Security & Surveillance',
-    icon: '🔒',
-    shortDesc: 'Vetted guards recruitment, modern HD CCTV surveillance, and biometric access networks.',
-    detailedDesc: 'Defend organizational assets with elite physical security presence, remote AI-enhanced operational camera centers, smart facial-reading hubs, and continuous hazard reporting.',
-    options: CATEGORY_SERVICES['Security & Surveillance']
-  },
-  {
-    category: 'Marketing & Brand',
+    category: 'Marketing & Brand Solutions',
     icon: '📢',
-    shortDesc: 'Performance digital advertising, localized SEO architectures, collateral suites, and launch events.',
-    detailedDesc: 'Accelerate client acquisition and brand authority. We engineer custom performance marketing models, targeted local indexing, corporate launch events, and editorial collateral suites.',
-    options: CATEGORY_SERVICES['Marketing & Brand']
+    shortDesc: 'Multi-channel digital marketing, visual graphic branding, editorial content design, and custom corporate giftware.',
+    detailedDesc: 'Target premium market share and build strong corporate identity. We orchestrate performant digital advertising channels (PPC, SEO), cohesive brand guides, multimedia video editing, on-site photography, high-end corporate hampers, and sign boards.',
+    options: CATEGORY_SERVICES['Marketing & Brand Solutions']
   },
   {
-    category: 'Logistics & Fleet Commute',
+    category: 'Office Interiors & Space Setup',
+    icon: '🏢',
+    shortDesc: 'Modern commercial office layouts, ergonomic workstations, interior design, and meeting room media setups.',
+    detailedDesc: 'Transform white-shell commercial floors into high-efficiency office assets. Designing smart spatial floor plans, executing fit-out projects, supply-assembly of ergonomic desks/chairs, and premium acoustic integration for video conferencing rooms.',
+    options: CATEGORY_SERVICES['Office Interiors & Space Setup']
+  },
+  {
+    category: 'Facility, Housekeeping & Security',
+    icon: '🔒',
+    shortDesc: 'Comprehensive facilities operations, certified electro-mechanical engineers, sanitization, and enterprise security guard forces with CCTV.',
+    detailedDesc: 'Guarantee seamless day-to-day physical premises integrity. We unify mechanical-electrical maintenance (HVAC, fire panels, water ROs), executive security details, AI-assisted video surveillance centers, and premium cleaning contracts under one rigid Service Level Agreement (SLA).',
+    options: CATEGORY_SERVICES['Facility, Housekeeping & Security']
+  },
+  {
+    category: 'Logistics & Freight Services',
     icon: '🚚',
-    shortDesc: 'Employee transit shuttles, cross-border shipping, inter-state warehousing logistics, and GPS monitoring.',
-    detailedDesc: 'Ensure on-time material transfer and workforce commute. We implement enterprise cab fleets, real-time tracking dashboard access, and audited inter-state logistics structures.',
-    options: CATEGORY_SERVICES['Logistics & Fleet Commute']
+    shortDesc: 'National freight logistics, secure cold-chain/dry warehousing, last-mile delivery, and rapid document couriers.',
+    detailedDesc: 'Align your supply chain pipelines. We coordinate multi-modal cargo transit, temperature/security-controlled inventory warehousing, last-mile fulfillment hubs, and extremely responsive legal/contractual courier dispatches.',
+    options: CATEGORY_SERVICES['Logistics & Freight Services']
   },
   {
-    category: 'Legal Consults & Corporate Secretarial',
-    icon: '💼',
-    shortDesc: 'SLA contracts drafting, IP & Patents filings, litigation audits, and professional due diligence audits.',
-    detailedDesc: 'Solidify your business legal frameworks. Our accredited attorneys structure tight service level agreements, clear trademark filings, corporate secretarial audits, and arbitration representation.',
-    options: CATEGORY_SERVICES['Legal Consults & Corporate Secretarial']
+    category: 'Food, Pantry & Wellness',
+    icon: '❤️',
+    shortDesc: 'Standard employee meal provisions, managed high-volume kitchen setups, coffee vending, and preventative corporate health programs.',
+    detailedDesc: 'Enhance employee satisfaction and retention. We provide daily corporate buffet arrangements, snack bar provisions, certified water RO systems, tea/coffee automated machines, medical checkups, on-site physical support rooms, and employee counseling.',
+    options: CATEGORY_SERVICES['Food, Pantry & Wellness']
   },
   {
-    category: 'Catering & Corporate F&B',
-    icon: '🍽️',
-    shortDesc: 'Canteen kitchen engineering, daily buffet arrangements, executive boardroom catering, and pantries.',
-    detailedDesc: 'Delight employee cohorts with certified hygiene canteens, nutritious daily rotating meal setups, cafeteria automated vending configurations, and boardroom refreshment logistics.',
-    options: CATEGORY_SERVICES['Catering & Corporate F&B']
-  },
-  {
-    category: 'Sanitization & Pest Hygiene',
-    icon: '🧼',
-    shortDesc: 'Industrial pest extermination, chemical waste elimination audits, air filtration, and workspace disinfection.',
-    detailedDesc: 'Ensure safe, odor-controlled, and sterile office layouts. We deploy medical-grade sanitization treatments, deep structural termite barriers, and certified bio-waste disposal chains.',
-    options: CATEGORY_SERVICES['Sanitization & Pest Hygiene']
-  },
-  {
-    category: 'Corporate Travel & Stays',
-    icon: '✈️',
-    shortDesc: 'Bulk flights reservations, corporate luxury hotels contract tiering, Forex concierge, and visa assist.',
-    detailedDesc: 'Simplify multi-city business itineraries. We orchestrate bulk flight reservations, exclusive hotel corporate rates, visa support checklists, and unified travel expense billing panels.',
-    options: CATEGORY_SERVICES['Corporate Travel & Stays']
-  },
-  {
-    category: 'Bulk Stationery & Custom Printing',
-    icon: '🖨️',
-    shortDesc: 'High-volume print schedules, modular furniture, desks, and direct-to-desk replenishments.',
-    detailedDesc: 'Equip your offices effortlessly. We coordinate contract-based stationers, unified printing schedules, premium desk accessories, customized manuals, and bulk consumables storage.',
-    options: CATEGORY_SERVICES['Bulk Stationery & Custom Printing']
-  },
-  {
-    category: 'Workspace Leasing & Fit-Outs',
-    icon: '📐',
-    shortDesc: 'Premium corporate lease sourcing, virtual addresses, acoustic partitions, and modular office fit-outs.',
-    detailedDesc: 'Transition into custom office sites. We source high-potential properties, allocate legal virtual office addresses, construct acoustic-insulated walls, and install ergonomic workspaces.',
-    options: CATEGORY_SERVICES['Workspace Leasing & Fit-Outs']
-  },
-  {
-    category: 'Gifting & Merchandising',
-    icon: '🎁',
-    shortDesc: 'Custom merchandised kits, executive gift hampers, gadget kits, and trophy carvings.',
-    detailedDesc: 'Reinforce brand allegiance and milestones. We design bespoke employee welcome hampers, branded premium apparel, leather executive boxes, electronic assets, and custom plaques.',
-    options: CATEGORY_SERVICES['Gifting & Merchandising']
-  },
-  {
-    category: 'Wellness & Corporate Insurance',
-    icon: '🩺',
-    shortDesc: 'Comprehensive group medical coverage policies, paramedic clinics, stress-relief camps, and health checks.',
-    detailedDesc: 'Bolster personnel health indices. We negotiate group health insurance deals, configure on-site basic medical clinics, and run periodic mindfulness camps for employee stress optimization.',
-    options: CATEGORY_SERVICES['Wellness & Corporate Insurance']
-  },
-  {
-    category: 'ESG, Carbon & Energy Audits',
-    icon: '🌱',
-    shortDesc: 'Carbon emission audit reporting, grid solar installs, LEED certification advice, and e-waste certificates.',
-    detailedDesc: 'Reach environmental sustainability mandates. We conduct independent greenhouse gas carbon accounting audits, set up solar grids, and issue formal e-waste destruction standard certifications.',
-    options: CATEGORY_SERVICES['ESG, Carbon & Energy Audits']
-  },
-  {
-    category: 'Custom Signage & Branding Displays',
-    icon: '🖼️',
-    shortDesc: 'Lobby 3D acrylic lettering, outdoor LED banners, hazard indicator signage, and standees prints.',
-    detailedDesc: 'Command maximum brand visibility indoors and outdoors. We fabricate 3D acrylic signs, secure light-box banners, warehouse hazard alerts plates, and trade-show retractable displays.',
-    options: CATEGORY_SERVICES['Custom Signage & Branding Displays']
+    category: 'Manufacturing & Industrial Services',
+    icon: '🔧',
+    shortDesc: 'High-precision CNC milling, custom raw material fabrication, bulk standard packaging, and qualified technical labor.',
+    detailedDesc: 'Augment your physical production lines. Scale industrial activities smoothly with certified machinists, heavy welding solutions, precise visual quality inspections, and fully biodegradable industrial shipping solutions.',
+    options: CATEGORY_SERVICES['Manufacturing & Industrial Services']
   }
 ];
 

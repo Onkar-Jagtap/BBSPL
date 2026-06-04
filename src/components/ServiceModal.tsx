@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { X, Check, Building2, User2, MessageSquare, PhoneCall, Mail, Sparkles, CheckCircle2, ChevronRight, AlertCircle, Terminal, Share2, Eye, LayoutGrid } from 'lucide-react';
+import { X, Check, Building2, User2, MessageSquare, PhoneCall, Mail, Sparkles, CheckCircle2, ChevronRight, AlertCircle } from 'lucide-react';
 import { CATEGORY_SERVICES, ServiceCategory, InquiryPayload } from '../types';
 
 interface ServiceModalProps {
@@ -21,16 +21,11 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   
-  // Tabs: 'receipt' vs 'telemetry' (to toggle between visual SLA response receipt vs sheets/email logs)
-  const [activeTab, setActiveTab] = useState<'receipt' | 'telemetry'>('receipt');
-
   // Validation and process status states
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [leadRecordId, setLeadRecordId] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
-  const [mailDetails, setMailDetails] = useState<any>(null);
-  const [sheetDetails, setSheetDetails] = useState<any>(null);
 
   // Synchronize options when modal opens with a different category context
   useEffect(() => {
@@ -40,41 +35,28 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
       setErrors({});
       setLeadRecordId(null);
       setSuccessMsg(null);
-      setMailDetails(null);
-      setSheetDetails(null);
-      setActiveTab('receipt');
     }
   }, [isOpen, categoryName]);
 
   if (!isOpen) return null;
 
-  // Let's perform robust case-insensitive check to map to standard service category list
-  const matchedKey = Object.keys(CATEGORY_SERVICES).find(
-    (key) => key.toLowerCase() === categoryName.trim().toLowerCase()
-  ) as ServiceCategory | undefined;
-
+  // Retrieve option arrays matching the active category request
   let availableOptions: string[] = [];
   let headerTitle = categoryName;
   let subText = 'Select specific requirements matching your business objectives';
-  const isPartner = categoryName === 'partner' || categoryName === 'Partnership Registration';
-  const isGeneralQuote = categoryName === 'quote' || categoryName === 'Enterprise Free Quote Request';
+  let isPartner = categoryName === 'partner';
+  let isGeneralQuote = categoryName === 'quote';
 
   if (isPartner) {
     headerTitle = 'Become a Certified Partner';
     subText = 'Register your enterprise inside BusinessBridge premium vetted vendor roster';
-    availableOptions = ['Register as Service Provider', 'Joint Venture Development', 'Strategic Master Vendor Partnership'];
+    availableOptions = ['Register as Service Provider', 'Joint Venture Development', 'Strategic Master Vendor Inquiry'];
   } else if (isGeneralQuote) {
     headerTitle = 'Enterprise Free Quote Request';
-    subText = 'Select any sectors of interest for consolidated Pune-based SLA bids';
+    subText = 'Select any sectors of interest for consolidated service bids';
     availableOptions = Object.keys(CATEGORY_SERVICES);
-  } else if (matchedKey) {
-    headerTitle = matchedKey;
-    availableOptions = CATEGORY_SERVICES[matchedKey] || [];
-    subText = `Compare and manage vetted providers for ${matchedKey}`;
   } else {
-    // Adaptive fallback
-    headerTitle = categoryName;
-    availableOptions = CATEGORY_SERVICES['Technology & Digital'];
+    availableOptions = CATEGORY_SERVICES[categoryName as ServiceCategory] || [];
     subText = `Compare and manage vetted providers for ${categoryName}`;
   }
 
@@ -91,15 +73,16 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
     if (!companyName.trim()) tempErrors.companyName = 'Enterprise Company Name is required.';
     if (!contactName.trim()) tempErrors.contactName = 'Liaison Person Name is required.';
     
+    // Basic phone validation (at least 8 characters)
     const phoneNo = phone.trim();
     if (!phoneNo) {
       tempErrors.phone = 'WhatsApp / Active Mobile number is required.';
     } else if (phoneNo.length < 8) {
-      tempErrors.phone = 'Please provide a valid, complete WhatsApp/Phone number.';
+      tempErrors.phone = 'Please provide a valid, complete contract number.';
     }
 
     if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      tempErrors.email = 'Please provide a valid email format (e.g. liaison@company.com).';
+      tempErrors.email = 'Please provide a valid email format (e.g. user@domain.com).';
     }
 
     setErrors(tempErrors);
@@ -134,18 +117,18 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        throw new Error(data.error || 'Server rejected inquiry package.');
+        throw new Error(data.error || 'Server rejected inquiry package. Please examine inputs.');
       }
 
       setLeadRecordId(data.id || `LEAD_REF_${Math.floor(Math.random() * 900000 + 100000)}`);
-      setSuccessMsg(data.message || 'Your B2B inquiry has been filed with our Shivaji Nagar, Pune regional office.');
+      setSuccessMsg(data.message || 'Your inquiry registered successfully with our Pune operations center.');
       
-      if (data.mailDetails) {
-        setMailDetails(data.mailDetails);
-      }
-      if (data.sheetDetails) {
-        setSheetDetails(data.sheetDetails);
-      }
+      // Cleanup inputs on success
+      setOtherDetails('');
+      setCompanyName('');
+      setContactName('');
+      setPhone('');
+      setEmail('');
     } catch (err: any) {
       console.error('[SUBMIT_EXCEPTION] Caught error inside modal submission:', err);
       setErrors({ apiError: err.message || 'Network unreachable. Please check your connectivity.' });
@@ -157,155 +140,84 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
   // Launch WhatsApp fallback with pre-formatted message
   const launchWhatsAppFallback = () => {
     const activeDetails = `Hello BusinessBridge Support!\n\nI just submitted an inquiry on your portal.\n*Reference ID*: ${leadRecordId || 'N/A'}\n*Company*: ${companyName || 'Corporate Client'}\n*Authorized Contact*: ${contactName}\n*Category*: ${headerTitle}\n*Services selected*: ${selectedServices.join(', ') || 'General Consultation'}\n*Notes*: ${otherDetails || 'N/A'}`;
-    const uri = `https://wa.me/912049190000?text=${encodeURIComponent(activeDetails)}`;
+    const uri = `https://wa.me/91XXXXXXXXXX?text=${encodeURIComponent(activeDetails)}`;
     window.open(uri, '_blank', 'noopener,noreferrer');
   };
 
   return (
     <div 
-      className="fixed inset-0 z-[700] bg-[#030305]/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto pointer-events-auto"
+      className="fixed inset-0 z-[700] bg-[#030305]/90 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget && !isSubmitting) onClose();
       }}
     >
       <div 
-        className="w-full max-w-[680px] bg-[#0b0c10]/95 border border-white/[0.08] p-5 sm:p-7 rounded-2xl shadow-[0_30px_70px_rgba(0,0,0,0.95)] relative my-auto animate-in fade-in zoom-in duration-300 pointer-events-auto select-auto"
+        className="w-full max-w-[640px] bg-[#141419]/95 border border-white/[0.08] p-5 sm:p-7 rounded-2xl shadow-[0_30px_70px_rgba(0,0,0,0.85)] relative my-auto animate-in fade-in zoom-in duration-300"
       >
-        {/* Close Button ("X") - Explicit pointer-events and cursor-pointer */}
+        {/* Close Button */}
         {!isSubmitting && (
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/[0.03] border border-white/[0.08] flex items-center justify-center text-[#c4beb4] hover:bg-[#c9a84c] hover:text-[#030305] transition-all duration-300 z-50 cursor-pointer pointer-events-auto"
-            title="Close form panel"
+            aria-label="Close modal"
+            className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.1] hover:border-[#c9a84c]/50 hover:bg-[#c9a84c]/20 text-[#c4beb4] hover:text-[#e2c06a] flex items-center gap-1.5 text-[10px] uppercase font-mono tracking-widest transition-all duration-300 z-10 group cursor-pointer"
           >
-            <X className="w-4 h-4" />
+            <span>Close</span>
+            <X className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-90" />
           </button>
         )}
 
-        {/* Success SLA Screen View containing dynamic tabs */}
+        {/* Success SLA Screen View */}
         {successMsg ? (
-          <div className="animate-in fade-in zoom-in duration-400">
-            {/* Tab selector inside Success Dashboard */}
-            <div className="flex border-b border-white/[0.05] gap-4 mb-6 text-xs text-[#8a8278] pointer-events-auto">
-              <button
-                type="button"
-                onClick={() => setActiveTab('receipt')}
-                className={`pb-2.5 px-1 flex items-center gap-1.5 font-bold uppercase tracking-wider cursor-pointer border-b-2 transition-all ${
-                  activeTab === 'receipt' ? 'border-[#c9a84c] text-[#e2c06a]' : 'border-transparent hover:text-white'
-                }`}
-              >
-                <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />
-                Submission Receipt
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab('telemetry')}
-                className={`pb-2.5 px-1 flex items-center gap-1.5 font-bold uppercase tracking-wider cursor-pointer border-b-2 transition-all ${
-                  activeTab === 'telemetry' ? 'border-[#c9a84c] text-[#e2c06a]' : 'border-transparent hover:text-[#e2c06a]/70'
-                }`}
-              >
-                <Terminal className="w-3.5 h-3.5 animate-pulse" />
-                Live Sync Telemetry
-              </button>
+          <div className="py-6 text-center animate-in fade-in zoom-in duration-400">
+            <div className="w-16 h-16 bg-[#c9a84c]/10 border border-[#c9a84c]/30 rounded-full flex items-center justify-center mx-auto mb-5 text-[#e2c06a]">
+              <CheckCircle2 className="w-9 h-9" />
+            </div>
+            
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl text-white font-semibold mb-2">
+              Inquiry Registered Successfully
+            </h3>
+            
+            <div className="text-xs font-mono tracking-widest text-[#e2c06a] uppercase mb-4">
+              ID: {leadRecordId}
             </div>
 
-            {activeTab === 'receipt' ? (
-              <div className="py-2 text-center">
-                <div className="w-16 h-16 bg-[#c9a84c]/10 border border-[#c9a84c]/30 rounded-full flex items-center justify-center mx-auto mb-4 text-[#e2c06a]">
-                  <CheckCircle2 className="w-9 h-9" />
-                </div>
-                
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl text-white font-semibold mb-2">
-                  Inquiry Filed Systematically
-                </h3>
-                
-                <div className="text-[10px] font-mono tracking-widest text-[#e2c06a] uppercase mb-4">
-                  Lead tracking Ref: {leadRecordId}
-                </div>
+            <p className="text-sm text-[#c4beb4] leading-relaxed max-w-md mx-auto mb-6">
+              {successMsg} Our team is shortlisting verified B2B specialists in Pune right now.
+            </p>
 
-                <p className="text-xs text-[#c4beb4] leading-relaxed max-w-sm mx-auto mb-6 font-light">
-                  {successMsg} Our assigned Pune account executives are shortlisting suppliers who match your SLAs and mechanical/compliance bounds.
-                </p>
+            <div className="bg-[#c9a84c]/5 border border-[#c9a84c]/15 p-4 rounded-xl max-w-md mx-auto text-left mb-6">
+              <h4 className="text-xs font-bold uppercase text-[#e2c06a] tracking-wider mb-1 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" />
+                2-Hour SLA Initiated
+              </h4>
+              <p className="text-xs text-[#8a8278] leading-relaxed">
+                If submitted within standard corporate hours (9:00 AM - 6:00 PM IST), we guarantee contact within 2 hours.
+              </p>
+            </div>
 
-                <div className="bg-[#c9a84c]/5 border border-[#c9a84c]/15 p-4 rounded-xl max-w-md mx-auto text-left mb-6 font-light">
-                  <h4 className="text-xs font-bold uppercase text-[#e2c06a] tracking-wider mb-1 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    Automated Google Sheets & SLA Dispatch
-                  </h4>
-                  <p className="text-[11px] text-[#8a8278] leading-relaxed">
-                    Lead coordinates were broadcasted to your linked Google Sheet! You can monitor the sheet injection details under the <b>Live Sync Telemetry</b> tab above.
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row items-center gap-3 justify-center pointer-events-auto">
-                  <button
-                    onClick={launchWhatsAppFallback}
-                    className="w-full sm:w-auto px-5 py-3 bg-[#c9a84c] text-[#030305] font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-[#e2c06a] hover:shadow-[0_0_15px_rgba(201,168,76,0.3)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <PhoneCall className="w-3.5 h-3.5" />
-                    Expedite via WhatsApp Call
-                  </button>
-                  <button
-                    onClick={onClose}
-                    className="w-full sm:w-auto px-5 py-3 bg-white/[0.04] text-white font-semibold text-xs uppercase tracking-wider rounded-lg border border-white/[0.08] hover:bg-white/[0.08] transition-colors cursor-pointer"
-                  >
-                    Return to Console
-                  </button>
-                </div>
-              </div>
-            ) : (
-              /* Telemetry Logs */
-              <div className="text-left py-2 font-mono text-xs animate-in fade-in duration-300 pointer-events-auto space-y-4">
-                {/* Google Sheet Sync Tracker Card */}
-                <div>
-                  <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2">
-                    <span className="text-[#e2c06a] font-bold uppercase tracking-widest text-[9px] flex items-center gap-1.5">
-                      <LayoutGrid className="w-3.5 h-3.5 text-[#c9a84c]" />
-                      Google Sheets Integration Log
-                    </span>
-                    <span className="text-[8px] px-1.5 py-0.5 rounded bg-green-500/10 text-green-400">
-                      STATUS: {sheetDetails?.success ? 'SYNCED' : 'ERROR'}
-                    </span>
-                  </div>
-                  
-                  <div className="bg-black/80 rounded-lg p-3 border border-white/5 text-[11px] text-[#c4beb4] space-y-1">
-                    <p className="text-green-400 font-semibold">⚡ [GOOGLE SHEETS] Sync requested... ID: {leadRecordId}</p>
-                    <p>📊 Target Webhook URL: <span className="text-blue-400 break-all text-[10px]">{sheetDetails?.webhookConfigured ? 'Direct Webhook Live Link' : 'Local Sandbox Simulator Active'}</span></p>
-                    <p>📌 State of Webhook trigger: <span className="text-yellow-500">{sheetDetails?.webhookConfigured ? 'Real Endpoint Connected' : 'Simulating Outbox Pipeline'}</span></p>
-                    <p className={`text-xs p-2 bg-white/5 rounded border border-white/10 mt-1 leading-relaxed ${sheetDetails?.success ? 'text-green-300' : 'text-[#c9a84c]'}`}>
-                      {sheetDetails?.log}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Nodemailer live email response trace log */}
-                <div>
-                  <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2">
-                    <span className="text-[#e2c06a] font-bold uppercase tracking-widest text-[9px] flex items-center gap-1.5">
-                      <Terminal className="w-3.5 h-3.5 text-[#c9a84c]" />
-                      SLA Broadcast System (SMTP)
-                    </span>
-                    <span className="text-[8px] px-1.5 py-0.5 rounded bg-[#c9a84c]/20 text-[#e2c06a]">
-                      STATUS: {mailDetails ? 'COMMITTED' : 'LOCAL'}
-                    </span>
-                  </div>
-
-                  <div className="bg-black/80 rounded-lg p-3 border border-white/5 text-[11px] text-[#c4beb4] space-y-1">
-                    <p className="text-green-400 font-semibold">⚡ [SMTP CLIENT] Connecting secure Nodemailer socket...</p>
-                    <p>📧 Outbox Target: <span className="text-yellow-500">info@businessbridge.in</span></p>
-                    <p className="text-blue-300">💬 Subject: "{mailDetails?.subject || 'B2B Sourcing Specification Alert'}"</p>
-                    <p className="text-green-400">✓ [SMTP RESPONSE] {mailDetails?.dispatchLog || 'Sent backup notice to admin mail list.'}</p>
-                  </div>
-                </div>
-              </div>
-            )}
+            {/* Expended Callback Button */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
+              <button
+                onClick={launchWhatsAppFallback}
+                className="w-full sm:w-auto px-5 py-3 bg-[#c9a84c] text-[#030305] font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-[#e2c06a] hover:shadow-[0_0_15px_rgba(201,168,76,0.3)] transition-all duration-300 flex items-center justify-center gap-2"
+              >
+                <PhoneCall className="w-3.5 h-3.5" />
+                Expedite via WhatsApp
+              </button>
+              <button
+                onClick={onClose}
+                className="w-full sm:w-auto px-5 py-3 bg-white/[0.04] text-white font-semibold text-xs uppercase tracking-wider rounded-lg border border-white/[0.08] hover:bg-white/[0.08] transition-colors"
+              >
+                Return to Site
+              </button>
+            </div>
           </div>
         ) : (
-          /* Normal Sourcing Form Screen (No upper tabs!) */
+          /* Main Interactive Form Screen View */
           <div>
-            <div className="mb-5">
+            <div className="mb-6">
               <div className="text-[10px] font-mono font-bold tracking-widest text-[#e2c06a] uppercase mb-1">
-                B2B SERVICE SOLVER · SHIVAJI NAGAR PUNE
+                B2B SERVICE SOLVER
               </div>
               <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl text-white font-medium leading-tight">
                 {headerTitle}
@@ -322,14 +234,14 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4 pointer-events-auto">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Service Checklist Options Selection Grid */}
               {availableOptions.length > 0 && (
                 <div>
-                  <label className="text-[10px] font-bold uppercase text-[#c4beb4] tracking-widest block mb-2">
-                    Select Specific SLA Targets or Verticals:
+                  <label className="text-[11px] font-bold uppercase text-[#c4beb4] tracking-widest block mb-2.5">
+                    Select Specific Requirements:
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[150px] overflow-y-auto pr-1 font-sans">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[160px] overflow-y-auto pr-1">
                     {availableOptions.map((opt, idx) => {
                       const isSel = selectedServices.includes(opt);
                       return (
@@ -337,7 +249,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
                           key={idx}
                           type="button"
                           onClick={() => toggleOption(opt)}
-                          className={`flex items-center text-left text-xs p-2.5 rounded-lg border transition-all duration-300 cursor-pointer ${
+                          className={`flex items-center text-left text-xs p-2.5 rounded-lg border transition-all duration-300 ${
                             isSel
                               ? 'bg-[#c9a84c]/10 border-[#c9a84c] text-[#e2c06a] font-medium'
                               : 'bg-white/[0.02] border-white/[0.05] text-[#c4beb4] hover:border-white/[0.15] hover:bg-white/[0.04]'
@@ -357,12 +269,12 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
               )}
 
               {/* Company Details Inputs Card */}
-              <div className="space-y-3 font-sans">
-                <label className="text-[10px] font-bold uppercase text-[#c4beb4] tracking-widest block mb-1">
-                  Enterprise Authorized Coordinates *
+              <div className="space-y-3.5">
+                <label className="text-[11px] font-bold uppercase text-[#c4beb4] tracking-widest block mb-1">
+                  Enterprise Contact Specifications:
                 </label>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-[#8a8278]">
@@ -375,7 +287,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
                         onChange={(e) => setCompanyName(e.target.value)}
                         className={`w-full bg-white/[0.02] border ${
                           errors.companyName ? 'border-red-500/50 focus:border-red-500' : 'border-white/[0.08] focus:border-[#c9a84c]'
-                        } rounded-lg pl-9 pr-3 py-2 text-white text-xs outline-none transition-colors pointer-events-auto cursor-text`}
+                        } rounded-lg pl-9 pr-3 py-2.5 text-white text-xs outline-none transition-colors`}
                       />
                     </div>
                     {errors.companyName && (
@@ -390,12 +302,12 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
                       </div>
                       <input
                         type="text"
-                        placeholder="Liaison Name *"
+                        placeholder="Your Full Name *"
                         value={contactName}
                         onChange={(e) => setContactName(e.target.value)}
                         className={`w-full bg-white/[0.02] border ${
                           errors.contactName ? 'border-red-500/50 focus:border-red-500' : 'border-white/[0.08] focus:border-[#c9a84c]'
-                        } rounded-lg pl-9 pr-3 py-2 text-white text-xs outline-none transition-colors pointer-events-auto cursor-text`}
+                        } rounded-lg pl-9 pr-3 py-2.5 text-white text-xs outline-none transition-colors`}
                       />
                     </div>
                     {errors.contactName && (
@@ -404,7 +316,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-[#8a8278]">
@@ -412,12 +324,12 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
                       </div>
                       <input
                         type="tel"
-                        placeholder="WhatsApp / Phone *"
+                        placeholder="WhatsApp / Phone Number *"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         className={`w-full bg-white/[0.02] border ${
                           errors.phone ? 'border-red-500/50 focus:border-red-500' : 'border-white/[0.08] focus:border-[#c9a84c]'
-                        } rounded-lg pl-9 pr-3 py-2 text-white text-xs outline-none transition-colors pointer-events-auto cursor-text`}
+                        } rounded-lg pl-9 pr-3 py-2.5 text-white text-xs outline-none transition-colors`}
                       />
                     </div>
                     {errors.phone && (
@@ -437,7 +349,7 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
                         onChange={(e) => setEmail(e.target.value)}
                         className={`w-full bg-white/[0.02] border ${
                           errors.email ? 'border-red-500/50 focus:border-red-500' : 'border-white/[0.08] focus:border-[#c9a84c]'
-                        } rounded-lg pl-9 pr-3 py-2 text-white text-xs outline-none transition-colors pointer-events-auto cursor-text`}
+                        } rounded-lg pl-9 pr-3 py-2.5 text-white text-xs outline-none transition-colors`}
                       />
                     </div>
                     {errors.email && (
@@ -448,20 +360,20 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
               </div>
 
               {/* Other Specifics Notes Box */}
-              <div className="font-sans">
-                <label className="text-[10px] font-bold uppercase text-[#c4beb4] tracking-widest block mb-1">
-                  Detailed Scope or Sourcing Parameters (Optional):
+              <div>
+                <label className="text-[11px] font-bold uppercase text-[#c4beb4] tracking-widest block mb-1.5">
+                  Detailed Scope or Intent (Optional):
                 </label>
                 <div className="relative">
-                  <div className="absolute top-2 left-3 pointer-events-none text-[#8a8278]">
+                  <div className="absolute top-2.5 left-3 pointer-events-none text-[#8a8278]">
                     <MessageSquare className="w-4 h-4" />
                   </div>
                   <textarea
                     rows={2}
-                    placeholder="Expected SLA boundaries, contract duration, headcount, Pune location parameters, etc..."
+                    placeholder="Describe specific timelines, quantities, service level expectations, location scope, etc..."
                     value={otherDetails}
                     onChange={(e) => setOtherDetails(e.target.value)}
-                    className="w-full bg-white/[0.02] border border-white/[0.08] focus:border-[#c9a84c] rounded-lg pl-9 pr-3 py-1.5 text-white text-xs outline-none transition-colors resize-none pointer-events-auto"
+                    className="w-full bg-white/[0.02] border border-white/[0.08] focus:border-[#c9a84c] rounded-lg pl-9 pr-3 py-2 text-white text-xs outline-none transition-colors resize-none"
                   />
                 </div>
               </div>
@@ -470,16 +382,16 @@ export default function ServiceModal({ isOpen, categoryName, onClose }: ServiceM
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3 bg-[#c9a84c] text-[#030305] font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-[#e2c06a] hover:shadow-[0_0_20px_rgba(201,168,76,0.35)] active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-2 pointer-events-auto disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
+                className="w-full py-3.5 bg-[#c9a84c] text-[#030305] font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-[#e2c06a] hover:shadow-[0_0_20px_rgba(201,168,76,0.35)] active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-2 pointer-events-auto disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
               >
                 {isSubmitting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-[#030305] border-t-transparent rounded-full animate-spin" />
-                    <span>Vetting Pune Market Rates...</span>
+                    <span>Analyzing specifications...</span>
                   </>
                 ) : (
                   <>
-                    <span>File Sourcing Specifications</span>
+                    <span>Submit for 2-Hour SLA Callback</span>
                     <ChevronRight className="w-4 h-4 stroke-[2.5]" />
                   </>
                 )}

@@ -20,10 +20,10 @@ export default function ChatbotWidget({ onOpenCategory }: ChatbotWidgetProps) {
       text: "👋 Welcome to BusinessBridge! I am your **B2B Service Concierge**. We consolidate technology, compliance, facility management, and workforce needs with vetted Pune providers into a single point of billing.\n\nWhat requirement can we solve for your enterprise today?",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       suggestedAnswers: [
-        '💻 Technology Solutions',
-        '👥 HR Recruiting & Payroll',
-        '⚖️ Business Compliance & CFO',
-        '🏢 Operational Facilities'
+        '💻 Tech & AI Solutions',
+        '🖥️ IT Hardware Rentals',
+        '👥 Workforce & Admin',
+        '⚖️ Finance & Compliance'
       ]
     }
   ]);
@@ -196,6 +196,16 @@ export default function ChatbotWidget({ onOpenCategory }: ChatbotWidgetProps) {
                 </p>
               </div>
             </div>
+            
+            {/* Intuitive Header Close button for Chat Panel */}
+            <button
+              onClick={() => setIsOpen(false)}
+              aria-label="Close chat"
+              className="p-1 px-2.5 rounded-full bg-white/[0.04] border border-white/[0.1] text-[#c4beb4] hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400 flex items-center gap-1 text-[9px] font-mono uppercase tracking-[0.1em] transition-all duration-300 cursor-pointer group"
+            >
+              <span>Close</span>
+              <X className="w-3 h-3 transition-transform duration-300 group-hover:rotate-90" />
+            </button>
           </div>
 
           {/* Messages Area */}

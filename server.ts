@@ -8,7 +8,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
-import nodemailer from 'nodemailer';
 
 // Configure dotenv for local environment variables
 dotenv.config();
@@ -35,129 +34,6 @@ interface InMemoryLead {
 }
 
 const leadsDatabase: InMemoryLead[] = [];
-
-// Helper function to send actual SMTP emails or output a beautiful simulation cascade
-async function sendLeadEmail(lead: InMemoryLead) {
-  const host = process.env.SMTP_HOST;
-  const port = parseInt(process.env.SMTP_PORT || '587');
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  const receiver = process.env.SMTP_RECEIVER || 'info@businessbridge.in';
-
-  const servicesFormatted = lead.selectedServices.length > 0 
-    ? lead.selectedServices.join(', ') 
-    : 'General Consultation';
-
-  const htmlContent = `
-    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #fafaf9; color: #1c1917; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-      <div style="background-color: #030305; padding: 24px; text-align: center; border-bottom: 3px solid #c9a84c;">
-        <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 300; letter-spacing: 1px;">Business<span style="color: #e2c06a; font-style: italic;">Bridge</span></h1>
-        <p style="color: #e2c06a; margin: 4px 0 0 0; font-size: 11px; text-transform: uppercase; letter-spacing: 2px;">SLA 2-Hour Notification Alert</p>
-      </div>
-      <div style="padding: 32px 24px;">
-        <h2 style="font-size: 18px; margin-top: 0; margin-bottom: 20px; font-weight: 600; color: #1c1917; border-bottom: 1px solid #e7e5e4; padding-bottom: 10px;">New B2B Lead Registered</h2>
-        
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
-          <tr>
-            <td style="padding: 8px 0; color: #78716c; font-size: 13px; width: 35%; font-weight: 600;">Lead ID</td>
-            <td style="padding: 8px 0; color: #1c1917; font-size: 13px; font-family: monospace; font-weight: bold;">${lead.id}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #78716c; font-size: 13px; font-weight: 600;">Company Name</td>
-            <td style="padding: 8px 0; color: #1c1917; font-size: 13px; font-weight: bold;">${lead.companyName}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #78716c; font-size: 13px; font-weight: 600;">Authorized Liaison</td>
-            <td style="padding: 8px 0; color: #1c1917; font-size: 13px;">${lead.contactName}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #78716c; font-size: 13px; font-weight: 600;">Category</td>
-            <td style="padding: 8px 0; color: #e1b439; font-size: 13px; font-weight: bold;">${lead.categoryName}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #78716c; font-size: 13px; font-weight: 600;">Selected Options</td>
-            <td style="padding: 8px 0; color: #1c1917; font-size: 13px;">${servicesFormatted}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #78716c; font-size: 13px; font-weight: 600;">Phone Number</td>
-            <td style="padding: 8px 0; color: #1c1917; font-size: 13px; font-weight: bold;">${lead.phone}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #78716c; font-size: 13px; font-weight: 600;">Corporate Email</td>
-            <td style="padding: 8px 0; color: #1c1917; font-size: 13px;">${lead.email || 'Not Provided'}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #78716c; font-size: 13px; font-weight: 600; vertical-align: top;">Auxiliary Notes</td>
-            <td style="padding: 8px 0; color: #44403c; font-size: 13px; line-height: 1.5;">${lead.otherDetails}</td>
-          </tr>
-        </table>
-
-        <div style="background-color: #f5f5f4; border-left: 4px solid #c9a84c; padding: 16px; border-radius: 4px; margin-bottom: 24px;">
-          <h4 style="margin: 0 0 6px 0; font-size: 12px; color: #c19b31; text-transform: uppercase; letter-spacing: 1px;">Operations SLA Checklist</h4>
-          <p style="margin: 0; font-size: 11px; color: #57534e; line-height: 1.4;">Pune-based account managers have been assigned. Standard 2-hour callback SLA deadline is calculated for: <strong>${new Date(Date.now() + 2*60*60*1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} IST</strong>.</p>
-        </div>
-      </div>
-      <div style="background-color: #f5f5f4; border-top: 1px solid #e7e5e4; padding: 16px; text-align: center; font-size: 10px; color: #a8a29e;">
-        Sent automatically from BusinessBridge B2B Sourcing Platform. Shivaji Nagar, Pune, MH.
-      </div>
-    </div>
-  `;
-
-  const logHeadline = `[EMAIL DISPATCH SIMULATOR] ID: ${lead.id} -> Recipient: ${receiver}`;
-  console.log('='.repeat(80));
-  console.log(logHeadline);
-  console.log(`SUBJECT: [SLA 2-Hour Alert] New B2B Enterprise Lead received: ${lead.companyName}`);
-  console.log(`TO: ${receiver}`);
-  console.log(`BODY PREVIEW: Company ${lead.companyName} requested ${servicesFormatted}`);
-  console.log('='.repeat(80));
-
-  let realDispatchSuccess = false;
-  let dispatchLog = 'SMTP credentials not configured. Operating in simulation mode to safeguard keys.';
-
-  if (host && user && pass) {
-    try {
-      const transporter = nodemailer.createTransport({
-        host,
-        port,
-        secure: port === 465,
-        auth: {
-          user,
-          pass
-        }
-      });
-
-      await transporter.sendMail({
-        from: `"BusinessBridge Portal" <${user}>`,
-        to: receiver,
-        subject: `[SLA 2-Hour Alert] New B2B Lead: ${lead.companyName}`,
-        html: htmlContent,
-        text: `New Lead ${lead.id} from ${lead.companyName}. Liaised by ${lead.contactName}. Phone: ${lead.phone}. Category: ${lead.categoryName}. Services: ${servicesFormatted}.`
-      });
-
-      realDispatchSuccess = true;
-      dispatchLog = `SUCCESS: Email bypassed SMTP mail gateway and delivered to ${receiver}`;
-      console.log(`[SMTP_SUCCESS] Verified mail delivered to ${receiver}`);
-    } catch (e: any) {
-      console.error('[SMTP_ERROR] Failed sending real email via nodemailer:', e);
-      dispatchLog = `FAILED: SMTP connection error: ${e.message || e}`;
-    }
-  }
-
-  // Also send a copy to the lead's email if provided
-  if (lead.email) {
-    console.log(`[EMAIL DISPATCH SIMULATOR] Dispatching customer copy to: ${lead.email}`);
-  }
-
-  return {
-    dispatched: true,
-    realDispatchSuccess,
-    recipient: receiver,
-    dispatchLog,
-    subject: `[SLA 2-Hour Alert] New B2B Lead: ${lead.companyName}`,
-    html: htmlContent,
-    timestamp: new Date().toISOString()
-  };
-}
 
 // Initialize Google Gemini SDK lazily to prevent server crash on module load
 let ai: GoogleGenAI | null = null;
@@ -188,76 +64,21 @@ function getGeminiClient(): GoogleGenAI | null {
 
 // B2B Fallback answers in case of missing keys or direct API errors
 const B2B_FALLBACK_ANSWERS: Record<string, string> = {
-  general: "Greetings from BusinessBridge B2B Concierge! I can assist you with outsourcing requirements across IT, HR Recruitment, Legal standard filings, Financial audit compliance, Facility sanitization, and Enterprise CCTV Security. Which sector can we compare quotes for you today?",
-  technology: "For Technology & IT requirements, BusinessBridge delivers end-to-end custom Software Development, Cyber audits with compliance guarantees, corporate AMC support, and secure high-performance Google Cloud migrations. Would you like to request a dedicated developer callback?",
-  hr: "Our HR & Workforce vertical manages executive recruitments for tech/non-tech sectors, payroll systems, background verifications, and onboarding. Please tell me your estimated monthly hiring budget so I can structure a contract proposal.",
-  finance: "Under Finance & Legal, we coordinate certified accounting audits, GST reconciliation, tax structures, and rapid trademark and ISO registration. These are carried out only by validated corporate attorneys.",
-  facility: "Our Facility Management coordinates complete physical oversight including industrial HVAC systems, deep commercial cleaning networks, waste recyclability, and scheduled electro-mechanical maintenance.",
-  security: "BusinessBridge CCTV surveillance coordinates smart video monitoring centers, guards, and biometric terminals. Would you like us to schedule a site safety analysis?",
-  marketing: "Under Marketing & Brand, we engineer performance marketing models, search indexing (SEO), corporate events, and editorial collateral suites. What are your lead acquisition goals?"
+  general: "Greetings from BusinessBridge B2B Concierge! I can assist you with outsourcing requirements across Technology, IT Hardware Rentals, Workforce & Admin Solutions, Finance, Legal & Consulting, Marketing, Office Interiors, Facilities, Security, Logistics, food service and Industrial operations. Which sector can we compare quotes for you today?",
+  technology: "For Technology & Digital Solutions, BusinessBridge delivers end-to-end custom Software Development, custom AI pipelines, cloud architecture services, and corporate IT support helpdesks. Would you like to request an expedited callback?",
+  rentals: "Our IT Hardware & Equipment Rentals division manages premium enterprise laptop leases, desktops, servers, and printer fleets with rapid on-site replacement guarantees. What is your estimated hardware requirement scope?",
+  workforce: "Our Workforce & Admin Solutions vertical manages executive recruitment, contract staffing, receptionist provisions, data entry operations, paper records digitization, and office consumables supply. Please tell me your staffing scope so I can structure a contract proposal.",
+  finance: "Under Finance, Legal & Consulting, we coordinate certified accounting, fractional CFO advisory, GST filings, trademark application, ISO certification audits, and process improvement consulting.",
+  marketing: "Under Marketing & Brand Solutions, we engineer performance marketing models, search indexing (SEO), graphic branding guidelines, video/photo editing, printing, and custom corporate gifts. What are your client acquisition targets?",
+  office: "For Office Interiors & Space Setup, we design layout visual blueprints, perform fit-out constructions, and supply ergonomic workstations & media room audio-video equipment.",
+  facility: "Our Facility, Housekeeping & Security vertical coordinates physical premises integrity, AC/electrical/plumbing engineering audits, deep workspace cleaning, remote AI-assisted CCTV video hubs, and certified security guard units under a single consolidated SLA.",
+  logistics: "Our Logistics & Freight Services division manages secure warehouse storage operations, multi-modal container truck cargo freight, last-mile delivery lanes, and secure courier legal envelope dispatches.",
+  food: "Our Food, Pantry & Wellness vertical manages daily corporate employee breakfast/lunch catering, coffee machine programs, snacks delivery, routine water RO maintenance, and preventative employee medical checkups.",
+  manufacturing: "Under Manufacturing & Industrial Services, we coordinate CNC contract machining, specialized metal welding/fabrication fabrication, large cargo packaging solutions, and accredited quality controllers."
 };
 
-// Helper function to forward lead details of B2B inquiries directly to a Google Sheet webhook
-async function postToGoogleSheets(lead: InMemoryLead) {
-  const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL || process.env.GOOGLE_SHEETS_WEBHOOK_URL;
-  if (!webhookUrl) {
-    console.log(`[GOOGLE_SHEETS] Webhook URL not configured. Simulating Google Sheets row insertion...`);
-    const mockRowIndex = leadsDatabase.length;
-    return {
-      success: true,
-      simulated: true,
-      rowIndex: mockRowIndex + 1,
-      webhookConfigured: false,
-      sheetUrl: 'https://docs.google.com/spreadsheets/d/your-google-sheet-id/edit',
-      log: `SUCCESS: Simulating Google Sheets sync. Inserted lead details into Row ${mockRowIndex + 1} of virtual Google Sheet: "BusinessBridge Lead Register". (Add GOOGLE_SHEET_WEBHOOK_URL in .env to link your real sheet)`
-    };
-  }
-
-  try {
-    const payload = {
-      timestamp: lead.timestamp,
-      leadId: lead.id,
-      companyName: lead.companyName,
-      contactName: lead.contactName,
-      phone: lead.phone,
-      email: lead.email || 'N/A',
-      category: lead.categoryName,
-      services: lead.selectedServices.join(', '),
-      notes: lead.otherDetails
-    };
-
-    console.log(`[GOOGLE_SHEETS] Forwarding lead ID ${lead.id} to connected Webhook...`);
-    const response = await fetch(webhookUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-
-    const responseText = await response.text();
-    console.log(`[GOOGLE_SHEETS_SUCCESS] Webhook accepted payload. Response: ${responseText}`);
-    return {
-      success: true,
-      simulated: false,
-      webhookConfigured: true,
-      responsePreview: responseText.substring(0, 150),
-      log: `SUCCESS: Broadcast lead payload to linked Google App Script Web Hook. Payload mapped to rows successfully.`
-    };
-  } catch (err: any) {
-    console.error(`[GOOGLE_SHEETS_ERROR] Transmission failed:`, err);
-    return {
-      success: false,
-      simulated: false,
-      webhookConfigured: true,
-      error: err.message || err,
-      log: `FAILED: Error connecting to Google Sheet Webhook endpoint: ${err.message || err}`
-    };
-  }
-}
-
 // ENDPOINT 1: Register inquiry leads with meticulous validation and safeguards
-app.post('/api/inquire', async (req, res) => {
+app.post('/api/inquire', (req, res) => {
   try {
     const { categoryName, selectedServices, otherDetails, companyName, contactName, phone, email } = req.body;
 
@@ -290,33 +111,11 @@ app.post('/api/inquire', async (req, res) => {
     leadsDatabase.push(newLead);
     console.log(`[LEAD_SAVED] Registered B2B Request successfully. ID: ${newLead.id}`, newLead);
 
-    // Call Google Sheets sync pipeline
-    const sheetResult = await postToGoogleSheets(newLead);
-
-    // Run the email alert pipeline asynchronously or await it cleanly
-    sendLeadEmail(newLead)
-      .then((mailResult) => {
-        return res.status(200).json({
-          success: true,
-          id: newLead.id,
-          message: 'Your inquiry has been cataloged systematically. Our standard 2-hour callback SLA has officially initiated.',
-          emailSent: true,
-          mailDetails: mailResult,
-          sheetDetails: sheetResult
-        });
-      })
-      .catch((mailErr) => {
-        console.error('[EMAIL_ALERT_ERROR] Suppressed email failure:', mailErr);
-        // Standard success even if email failed, to ensure high robust uptime
-        return res.status(200).json({
-          success: true,
-          id: newLead.id,
-          message: 'Your inquiry has been cataloged. Our standard 2-hour callback SLA has initiated.',
-          emailSent: false,
-          mailError: mailErr.message || mailErr,
-          sheetDetails: sheetResult
-        });
-      });
+    return res.status(200).json({
+      success: true,
+      id: newLead.id,
+      message: 'Your inquiry has been cataloged systematically. Our standard 2-hour callback SLA has officially initiated.'
+    });
   } catch (err: any) {
     console.error('[ERROR] Exception raised inside /api/inquire handler:', err);
     return res.status(500).json({ success: false, error: 'Internal validation failure. Your inquiry could not be persisted.' });
@@ -341,17 +140,21 @@ app.post('/api/chat', async (req, res) => {
 
     // Context System Instructions (guides Gemini on tone, limits, and BusinessBridge specifics)
     const systemPrompt = `You are "BusinessBridge Concierge", a highly polished, professional B2B advisory assistant representing BusinessBridge solutions.
-We operate across 6 major enterprise categories (17 total sub-categories):
-1. Technology & Digital (Software Dev, Cloud, Cyber Audits, Corporate IT Support, Website Dev)
-2. HR & Workforce (Executive Recruitment, Contract Staffing, Payroll, BG verification, Skill development)
-3. Finance & Legal (Fractional CFO, GST/Tax filing, Company Trademark & ISO registration, Corporate Secrets)
-4. Facility Management (Mechanical HVAC/Electrical grids, Plumbing, Deep Commercial cleaning, Pest Control, Recycling)
-5. Security & Surveillance (Vetted physical guards, CCTV deployments, remote CCTV tracking feed, Biometric access hubs)
-6. Marketing & Brand (Performance ads, Local SEO campaigns, video/staging corporate production, premium event planning)
+We operate across 10 major consolidated enterprise categories representing all enterprise support verticals:
+1. Technology & Digital Solutions (custom software development, custom AI automated pipelines, website/mobile engineering, cloud architecture, cybersecurity)
+2. IT Hardware & Equipment Rentals (premium enterprise laptop fleet rentals, workstations, server setups, printer fleet leasing)
+3. Workforce & Admin Solutions (placement, contract staffing, payroll processing, bg check, admin reception, documentation, office procurement, uniforms)
+4. Finance, Legal & Consulting (bookkeeping, CA tax/GST, company/trademark registration, regulatory audit standards, fractional CFO, business consulting, research reviews)
+5. Marketing & Brand Solutions (performance marketing PPC/SEO, branding guides, graphic content, photos, corporate gifting, signage printing)
+6. Office Interiors & Space Setup (designer floor plans, corporate fit-outs, workstation ergonomics, media conference rooms)
+7. Facility, Housekeeping & Security (mechanical-electrical HVAC contracts, AC, water RO, deep sanitizing, pest control, security guards, CCTV setup, access cards)
+8. Logistics & Freight Services (transportation cargo, warehousing space, last-mile delivery runs, executive courier documents)
+9. Food, Pantry & Wellness (corporate catering, healthy worker meals, coffee machines, routine gym contracts, on-site medics groups, counselors)
+10. Manufacturing & Industrial Services (precise CNC machining, structural fabrication, industrial packing boxes, manual tech workers)
 
 Our Core Value Propositions:
 - Single point of consolidated billing and coordination (Eliminates calling 20 different vendors).
-- Guaranteed 2-Hour callback callback promise SLA during standard business hours.
+- Guaranteed 2-Hour callback promise SLA during standard business hours.
 - Thorough legal verification, background checks, and certifications on all network providers (Free for clients, we charge providers a minimal platform coordination fee).
 - Located in Pune, Maharashtra, operating across major cities (Pune, Mumbai, Bangalore, Gurgaon).
 
@@ -371,24 +174,36 @@ Guidelines:
       let reply = B2B_FALLBACK_ANSWERS.general;
       let targetCat = '';
 
-      if (normalized.includes('tech') || normalized.includes('it') || normalized.includes('software') || normalized.includes('code') || normalized.includes('website')) {
+      if (normalized.includes('rental') || normalized.includes('lease') || normalized.includes('laptop') || normalized.includes('desktop') || normalized.includes('hardware')) {
+        reply = B2B_FALLBACK_ANSWERS.rentals;
+        targetCat = 'IT Hardware & Equipment Rentals';
+      } else if (normalized.includes('tech') || normalized.includes('it') || normalized.includes('software') || normalized.includes('code') || normalized.includes('website') || normalized.includes('dev') || normalized.includes('ai ')) {
         reply = B2B_FALLBACK_ANSWERS.technology;
-        targetCat = 'Technology & Digital';
-      } else if (normalized.includes('hr') || normalized.includes('hire') || normalized.includes('staff') || normalized.includes('payroll') || normalized.includes('recruit')) {
-        reply = B2B_FALLBACK_ANSWERS.hr;
-        targetCat = 'HR & Workforce';
-      } else if (normalized.includes('financ') || normalized.includes('tax') || normalized.includes('audit') || normalized.includes('gst') || normalized.includes('iso') || normalized.includes('compliance')) {
+        targetCat = 'Technology & Digital Solutions';
+      } else if (normalized.includes('hr') || normalized.includes('hire') || normalized.includes('staff') || normalized.includes('payroll') || normalized.includes('recruit') || normalized.includes('admin') || normalized.includes('procure') || normalized.includes('reception') || normalized.includes('unif')) {
+        reply = B2B_FALLBACK_ANSWERS.workforce;
+        targetCat = 'Workforce & Admin Solutions';
+      } else if (normalized.includes('financ') || normalized.includes('tax') || normalized.includes('audit') || normalized.includes('gst') || normalized.includes('iso') || normalized.includes('compliance') || normalized.includes('consult') || normalized.includes('legal') || normalized.includes('law')) {
         reply = B2B_FALLBACK_ANSWERS.finance;
-        targetCat = 'Finance & Legal';
-      } else if (normalized.includes('clean') || normalized.includes('facility') || normalized.includes('hvac') || normalized.includes('plumb') || normalized.includes('pest')) {
+        targetCat = 'Finance, Legal & Consulting';
+      } else if (normalized.includes('clean') || normalized.includes('facility') || normalized.includes('hvac') || normalized.includes('plumb') || normalized.includes('pest') || normalized.includes('secur') || normalized.includes('guard') || normalized.includes('cctv') || normalized.includes('camera')) {
         reply = B2B_FALLBACK_ANSWERS.facility;
-        targetCat = 'Facility Management';
-      } else if (normalized.includes('guard') || normalized.includes('cctv') || normalized.includes('secur') || normalized.includes('sensor')) {
-        reply = B2B_FALLBACK_ANSWERS.security;
-        targetCat = 'Security & Surveillance';
-      } else if (normalized.includes('market') || normalized.includes('brand') || normalized.includes('seo') || normalized.includes('event')) {
+        targetCat = 'Facility, Housekeeping & Security';
+      } else if (normalized.includes('market') || normalized.includes('brand') || normalized.includes('seo') || normalized.includes('event') || normalized.includes('ppc') || normalized.includes('video') || normalized.includes('gift')) {
         reply = B2B_FALLBACK_ANSWERS.marketing;
-        targetCat = 'Marketing & Brand';
+        targetCat = 'Marketing & Brand Solutions';
+      } else if (normalized.includes('interior') || normalized.includes('furniture') || normalized.includes('workstation') || normalized.includes('fit-out') || normalized.includes('renov')) {
+        reply = B2B_FALLBACK_ANSWERS.office;
+        targetCat = 'Office Interiors & Space Setup';
+      } else if (normalized.includes('logist') || normalized.includes('freight') || normalized.includes('warehouse') || normalized.includes('transport') || normalized.includes('courier')) {
+        reply = B2B_FALLBACK_ANSWERS.logistics;
+        targetCat = 'Logistics & Freight Services';
+      } else if (normalized.includes('food') || normalized.includes('catering') || normalized.includes('meal') || normalized.includes('pantry') || normalized.includes('wellness') || normalized.includes('gym') || normalized.includes('water') || normalized.includes('ro ')) {
+        reply = B2B_FALLBACK_ANSWERS.food;
+        targetCat = 'Food, Pantry & Wellness';
+      } else if (normalized.includes('machin') || normalized.includes('fabric') || normalized.includes('weld') || normalized.includes('pack') || normalized.includes('industr')) {
+        reply = B2B_FALLBACK_ANSWERS.manufacturing;
+        targetCat = 'Manufacturing & Industrial Services';
       }
 
       return res.json({
@@ -429,18 +244,26 @@ Guidelines:
     // Automatically detect Category context in the reply to assist client-side navigation shortcuts
     let detectedCategory = '';
     const lowerResponse = replyText.toLowerCase();
-    if (lowerResponse.includes('technology') || lowerResponse.includes('software') || lowerResponse.includes('cloud')) {
-      detectedCategory = 'Technology & Digital';
-    } else if (lowerResponse.includes('hr &') || lowerResponse.includes('workforce') || lowerResponse.includes('payroll')) {
-      detectedCategory = 'HR & Workforce';
-    } else if (lowerResponse.includes('finance') || lowerResponse.includes('legal') || lowerResponse.includes('tax')) {
-      detectedCategory = 'Finance & Legal';
-    } else if (lowerResponse.includes('facility') || lowerResponse.includes('cleaning') || lowerResponse.includes('hvac')) {
-      detectedCategory = 'Facility Management';
-    } else if (lowerResponse.includes('security') || lowerResponse.includes('surveillance') || lowerResponse.includes('cctv')) {
-      detectedCategory = 'Security & Surveillance';
-    } else if (lowerResponse.includes('marketing') || lowerResponse.includes('seo') || lowerResponse.includes('brand')) {
-      detectedCategory = 'Marketing & Brand';
+    if (lowerResponse.includes('rental') || lowerResponse.includes('lease') || lowerResponse.includes('laptop')) {
+      detectedCategory = 'IT Hardware & Equipment Rentals';
+    } else if (lowerResponse.includes('technology') || lowerResponse.includes('software') || lowerResponse.includes('cloud') || lowerResponse.includes('digital') || lowerResponse.includes('dev')) {
+      detectedCategory = 'Technology & Digital Solutions';
+    } else if (lowerResponse.includes('workforce') || lowerResponse.includes('staffing') || lowerResponse.includes('payroll') || lowerResponse.includes('admin') || lowerResponse.includes('recruitment')) {
+      detectedCategory = 'Workforce & Admin Solutions';
+    } else if (lowerResponse.includes('finance') || lowerResponse.includes('legal') || lowerResponse.includes('tax') || lowerResponse.includes('compliance') || lowerResponse.includes('consulting')) {
+      detectedCategory = 'Finance, Legal & Consulting';
+    } else if (lowerResponse.includes('marketing') || lowerResponse.includes('seo') || lowerResponse.includes('brand') || lowerResponse.includes('ppc')) {
+      detectedCategory = 'Marketing & Brand Solutions';
+    } else if (lowerResponse.includes('interior') || lowerResponse.includes('furniture') || lowerResponse.includes('layout')) {
+      detectedCategory = 'Office Interiors & Space Setup';
+    } else if (lowerResponse.includes('facility') || lowerResponse.includes('cleaning') || lowerResponse.includes('security') || lowerResponse.includes('cctv') || lowerResponse.includes('housekeeping')) {
+      detectedCategory = 'Facility, Housekeeping & Security';
+    } else if (lowerResponse.includes('logistic') || lowerResponse.includes('freight') || lowerResponse.includes('warehouse') || lowerResponse.includes('delivery')) {
+      detectedCategory = 'Logistics & Freight Services';
+    } else if (lowerResponse.includes('food') || lowerResponse.includes('catering') || lowerResponse.includes('pantry') || lowerResponse.includes('wellness') || lowerResponse.includes('meal')) {
+      detectedCategory = 'Food, Pantry & Wellness';
+    } else if (lowerResponse.includes('manufactur') || lowerResponse.includes('machin') || lowerResponse.includes('fabrication') || lowerResponse.includes('industrial')) {
+      detectedCategory = 'Manufacturing & Industrial Services';
     }
 
     return res.json({
