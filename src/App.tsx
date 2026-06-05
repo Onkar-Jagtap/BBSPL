@@ -154,44 +154,32 @@ export default function App() {
 
   // Setup cursor coordinate tracking listeners and DOM animation loop
   useEffect(() => {
-    const cdot = document.getElementById('cdot');
-
-    let mx = -100;
-    let my = -100;
-
     const handleGlobalMouseMove = (e: MouseEvent) => {
-      mx = e.clientX;
-      my = e.clientY;
-
-      if (cdot) {
-        cdot.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
-      }
-
       // Spacing-gate sparkle creation to produce discrete premium stars
       const dx = e.clientX - lastSparklePosRef.current.x;
       const dy = e.clientY - lastSparklePosRef.current.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
-      if (distance > 50) { // Larger distance threshold = fewer particles
+      if (distance > 16) { // Lower threshold for beautifully smooth, responsive trail flow
         lastSparklePosRef.current = { x: e.clientX, y: e.clientY };
         
-        // Highly transparent soft golden/amber colors for non-distracting subtle visual flow
+        // High quality premium golden, amber, and warm ivory/white star point colors
         const colors = [
-          'rgba(226, 192, 106, 0.35)', 
-          'rgba(255, 245, 223, 0.3)', 
-          'rgba(255, 215, 0, 0.25)', 
-          'rgba(201, 168, 76, 0.3)'
+          '#e2c06a', // Gold
+          '#ffd700', // Bright gold
+          '#f5f3ef', // Warm ivory
+          '#c9a84c', // Soft bronze-amber
         ];
         const id = `${Date.now()}-${Math.random()}`;
         const newSparkle = {
           id,
           x: e.clientX,
           y: e.clientY,
-          scale: Math.random() * 0.16 + 0.12, // Much smaller, delicate star-points
+          scale: Math.random() * 0.22 + 0.14, // Elegantly small, thin star-point scale
           color: colors[Math.floor(Math.random() * colors.length)],
         };
 
-        setSparkles(prev => [...prev.slice(-15), newSparkle]);
+        setSparkles(prev => [...prev.slice(-25), newSparkle]); // Maintain larger buffer for smooth continuous trace
       }
     };
 
@@ -268,24 +256,25 @@ export default function App() {
           {sparkles.map(spark => (
             <motion.div
               key={spark.id}
+              initial={{ scale: spark.scale, opacity: 0.65, rotate: 0 }}
+              animate={{ 
+                scale: 0, 
+                opacity: 0, 
+                y: Math.random() * 28 + 10, // Organic, soft physical drift downwards
+                x: Math.random() * 14 - 7,  // Subtle, delicate sway
+                rotate: Math.random() < 0.5 ? 120 : -120 
+              }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.7, ease: 'easeOut' }}
+              className="pointer-events-none w-2 h-2 flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
               style={{
                 position: 'fixed',
                 left: spark.x,
                 top: spark.y,
+                mixBlendMode: 'screen',
               }}
-              initial={{ scale: spark.scale, opacity: 0.5, rotate: 0 }}
-              animate={{ 
-                scale: 0, 
-                opacity: 0, 
-                y: Math.random() * 20 + 8, // Soft physical drift downwards
-                x: Math.random() * 12 - 6,  // Delicate side sway
-                rotate: Math.random() < 0.5 ? 90 : -90 
-              }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="pointer-events-none w-2 h-2 flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
             >
-              <svg viewBox="0 0 100 100" className="w-full h-full filter drop-shadow-[0_0_2px_rgba(226,192,106,0.3)]" style={{ fill: spark.color }}>
+              <svg viewBox="0 0 100 100" className="w-full h-full filter drop-shadow-[0_0_3px_rgba(226,192,106,0.45)]" style={{ fill: spark.color }}>
                 <path d="M 50 0 C 50 35, 35 50, 0 50 C 35 50, 50 65, 50 100 C 50 65, 65 50, 100 50 C 65 50, 50 35, 50 0 Z" />
               </svg>
             </motion.div>
