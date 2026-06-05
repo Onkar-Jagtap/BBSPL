@@ -36,6 +36,86 @@ import ChatbotWidget from './components/ChatbotWidget';
 import AnimatedCounter from './components/AnimatedCounter';
 import BrandMascot from './components/BrandMascot';
 
+interface Testimonial {
+  initials: string;
+  name: string;
+  role: string;
+  services: string;
+  quote: string;
+}
+
+const TESTIMONIALS_DATA: Testimonial[] = [
+  {
+    initials: 'AS',
+    name: 'Amit Sharma',
+    role: 'CTO, Zenith Tech Solutions',
+    services: 'Software Development & AI Automation',
+    quote: 'BusinessBridge helped us orchestrate custom software and AI automated pipelines. We loved the dedicated support; implementation was swift and professional.'
+  },
+  {
+    initials: 'NP',
+    name: 'Neha Patel',
+    role: 'VP of HR, Apex Solutions',
+    services: 'Contract Staffing & Background Checks',
+    quote: 'BusinessBridge handled our contract staffing and employee background verification. Exceptional help and extremely fast support from their account managers.'
+  },
+  {
+    initials: 'KM',
+    name: 'Karan Malhotra',
+    role: 'Facilities Head, NovaSpace India',
+    services: 'Office Remodeling & Space Setup',
+    quote: 'BusinessBridge helped us draft space remodeling designs and modular layout setups. Highly customized assistance and direct, transparent coordination throughout.'
+  },
+  {
+    initials: 'DN',
+    name: 'Devika Nair',
+    role: 'CFO, Blue Crest Ventures',
+    services: 'Tax Auditing & Corporate Legal',
+    quote: 'BusinessBridge managed our compliance documentation filings and trade registration. Fantastic corporate tax advisory support with zero hidden markups.'
+  },
+  {
+    initials: 'VS',
+    name: 'Vikram Singh',
+    role: 'Logistics Director, Bharat Foods',
+    services: 'Road Freight Transport & Warehousing',
+    quote: 'BusinessBridge helped us coordinate road freight logistics and active distribution centers. Responsive 24/7 support and reliable nationwide carrier fleets.'
+  },
+  {
+    initials: 'RG',
+    name: 'Rohan Gupta',
+    role: 'Happiness Manager, Innova Hub',
+    services: 'Corporate Catering & Pantry Setup',
+    quote: 'BusinessBridge organized custom corporate catering and automated our espresso pantry counters. Excellent service, delicious meals, and loved their customer support.'
+  }
+];
+
+function TypewriterText({ text }: { text: string }) {
+  const [displayed, setDisplayed] = useState('');
+
+  useEffect(() => {
+    let active = true;
+    let index = 0;
+    setDisplayed('');
+
+    const interval = setInterval(() => {
+      if (!active) return;
+      if (index < text.length) {
+        setDisplayed((prev) => prev + text.charAt(index));
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 12);
+
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, [text]);
+
+  return <p className="text-[1rem] sm:text-[1.05rem] text-[#f5f3ef] leading-[1.8] italic font-light">&ldquo;{displayed}&rdquo;</p>;
+}
+
 export default function App() {
   // Navigation & Panel overlays state
   const [panelOpen, setPanelOpen] = useState(false);
@@ -48,6 +128,16 @@ export default function App() {
   // State for cursor trailing sparkles
   const [sparkles, setSparkles] = useState<{ id: string; x: number; y: number; scale: number; color: string }[]>([]);
   const lastSparklePosRef = useRef({ x: 0, y: 0 });
+
+  // State and timer for rotating paired client reviews (2-2-2 format)
+  const [testimonialIdx, setTestimonialIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTestimonialIdx(prev => (prev + 1) % 3);
+    }, 7000); // Shift page every 7 seconds beautifully
+    return () => clearInterval(timer);
+  }, []);
 
   // Garbage collect old sparkles that have completed their lifespan to maintain low memory
   useEffect(() => {
@@ -82,20 +172,26 @@ export default function App() {
       const dy = e.clientY - lastSparklePosRef.current.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
-      if (distance > 20) {
+      if (distance > 50) { // Larger distance threshold = fewer particles
         lastSparklePosRef.current = { x: e.clientX, y: e.clientY };
         
-        const colors = ['#e2c06a', '#c9a84c', '#ffd700', '#fff5df', '#ffe8a3'];
+        // Highly transparent soft golden/amber colors for non-distracting subtle visual flow
+        const colors = [
+          'rgba(226, 192, 106, 0.35)', 
+          'rgba(255, 245, 223, 0.3)', 
+          'rgba(255, 215, 0, 0.25)', 
+          'rgba(201, 168, 76, 0.3)'
+        ];
         const id = `${Date.now()}-${Math.random()}`;
         const newSparkle = {
           id,
           x: e.clientX,
           y: e.clientY,
-          scale: Math.random() * 0.5 + 0.4,
+          scale: Math.random() * 0.16 + 0.12, // Much smaller, delicate star-points
           color: colors[Math.floor(Math.random() * colors.length)],
         };
 
-        setSparkles(prev => [...prev.slice(-25), newSparkle]);
+        setSparkles(prev => [...prev.slice(-15), newSparkle]);
       }
     };
 
@@ -166,20 +262,7 @@ export default function App() {
       {/* Background WebGL / Gradient Fallback Canvas */}
       <BackgroundCanvas />
 
-      {/* High-Contrast Golden Spark Cursor */}
-      <div id="cdot" className="pointer-events-none fixed z-[9999] rounded-full hidden md:block" style={{
-        position: 'fixed',
-        width: '4px',
-        height: '4px',
-        background: '#ffd700',
-        borderRadius: '50%',
-        pointerEvents: 'none',
-        boxShadow: '0 0 10px #c9a84c, 0 0 20px #c9a84c, 0 0 35px #e2c06a',
-        transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%)',
-        willChange: 'transform',
-      }} />
-
-      {/* Elegant Golden Star Trails (Sparkles) following cursor */}
+      {/* Elegant Soft Golden Trails (Sparkles) following cursor */}
       <div className="pointer-events-none fixed inset-0 z-[9996] overflow-hidden hidden md:block">
         <AnimatePresence>
           {sparkles.map(spark => (
@@ -190,19 +273,19 @@ export default function App() {
                 left: spark.x,
                 top: spark.y,
               }}
-              initial={{ scale: spark.scale, opacity: 0.9, rotate: 0 }}
+              initial={{ scale: spark.scale, opacity: 0.5, rotate: 0 }}
               animate={{ 
                 scale: 0, 
                 opacity: 0, 
-                y: Math.random() * 40 + 20, // Gorgeous physical gravity drift downwards
-                x: Math.random() * 24 - 12,  // Gentle side sway
-                rotate: Math.random() < 0.5 ? 180 : -180 
+                y: Math.random() * 20 + 8, // Soft physical drift downwards
+                x: Math.random() * 12 - 6,  // Delicate side sway
+                rotate: Math.random() < 0.5 ? 90 : -90 
               }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="pointer-events-none w-3.5 h-3.5 flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              className="pointer-events-none w-2 h-2 flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
             >
-              <svg viewBox="0 0 100 100" className="w-full h-full filter drop-shadow-[0_0_5px_rgba(226,192,106,0.7)]" style={{ fill: spark.color }}>
+              <svg viewBox="0 0 100 100" className="w-full h-full filter drop-shadow-[0_0_2px_rgba(226,192,106,0.3)]" style={{ fill: spark.color }}>
                 <path d="M 50 0 C 50 35, 35 50, 0 50 C 35 50, 50 65, 50 100 C 50 65, 65 50, 100 50 C 65 50, 50 35, 50 0 Z" />
               </svg>
             </motion.div>
@@ -441,7 +524,7 @@ export default function App() {
           </section>
 
           {/* SECTION 5: CLIENT TESTIMONIALS */}
-          <section className="space-y-12 pointer-events-auto select-none mt-24 sm:mt-32">
+          <section className="space-y-10 pointer-events-auto select-none mt-24 sm:mt-32">
             <div className="text-center max-w-xl mx-auto space-y-2">
               <span className="text-[10px] sm:text-xs font-mono font-bold text-[#e1b439] tracking-[0.25em] uppercase">
                 Accredited Testimonials
@@ -452,36 +535,68 @@ export default function App() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="glass-card p-8 rounded-2xl">
-                <p className="text-[1.15rem] text-[#f5f3ef] leading-[1.8] italic font-light">
-                  "BusinessBridge saved us weeks of redundant tender documentation and supplier sourcing. IT software infrastructure, Facility operations, and physical building security — all aggregated transparently under one managed agreement."
-                </p>
-                <div className="mt-6 flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/25 flex items-center justify-center text-xs font-bold text-[#e2c06a]">
-                    RK
-                  </div>
-                  <div>
-                    <h4 className="text-[11px] font-bold font-head uppercase tracking-wider text-white">Rajesh Kumar</h4>
-                    <p className="text-[10px] text-zinc-300 font-light">Director of Operations, TechCorp India</p>
-                  </div>
-                </div>
-              </div>
+            {/* Slider Container with persistent height to prevent layout shift during typing */}
+            <div className="min-h-[460px] sm:min-h-[380px] md:min-h-[280px] lg:min-h-[240px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={testimonialIdx}
+                  initial={{ opacity: 0, scale: 0.98, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.98, y: -10 }}
+                  transition={{ duration: 0.4, ease: 'easeInOut' }}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                >
+                  {[TESTIMONIALS_DATA[testimonialIdx * 2], TESTIMONIALS_DATA[testimonialIdx * 2 + 1]].map((testi, idx) => (
+                    <div 
+                      key={idx} 
+                      className="glass-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between relative overflow-hidden group border border-white/[0.04] bg-[#0a0a0d]/60 hover:border-[#c9a84c]/20 hover:bg-white/[0.02] transition-all min-h-[190px]"
+                    >
+                      <div className="space-y-4">
+                        {/* Service Chip Badge */}
+                        <div className="inline-flex items-center gap-1.5 bg-[#c9a84c]/10 text-[#e2c06a] text-[10px] font-mono tracking-wider px-2.5 py-1 rounded border border-[#c9a84c]/20 uppercase">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#e2c06a] animate-pulse" />
+                          {testi.services}
+                        </div>
+                        {/* Typewriting Quote */}
+                        <TypewriterText text={testi.quote} />
+                      </div>
+                      
+                      <div className="mt-6 flex items-center gap-3 border-t border-white/[0.04] pt-4">
+                        <div className="w-9 h-9 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/25 flex items-center justify-center text-xs font-bold text-[#e2c06a]">
+                          {testi.initials}
+                        </div>
+                        <div>
+                          <h4 className="text-[11px] font-bold font-head uppercase tracking-wider text-white">
+                            {testi.name}
+                          </h4>
+                          <p className="text-[10px] text-zinc-300 font-light">
+                            {testi.role}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
-              <div className="glass-card p-8 rounded-2xl">
-                <p className="text-[1.15rem] text-[#f5f3ef] leading-[1.8] italic font-light">
-                  "Our legal audits and ISO standard certification targets through BusinessBridge was exceptionally prompt. Their verified attorney network handled trademark applications, internal controls documentation, and compliance filings within timeline limits."
-                </p>
-                <div className="mt-6 flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/25 flex items-center justify-center text-xs font-bold text-[#e2c06a]">
-                    PM
-                  </div>
-                  <div>
-                    <h4 className="text-[11px] font-bold font-head uppercase tracking-wider text-white">Priya Mehta</h4>
-                    <p className="text-[10px] text-zinc-300 font-light">Managing Director, Precision Engineering Ltd.</p>
-                  </div>
-                </div>
-              </div>
+            {/* Pagination custom slide controls */}
+            <div className="flex justify-center items-center gap-3 mt-6">
+              {[0, 1, 2].map((idx) => {
+                const isActive = testimonialIdx === idx;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setTestimonialIdx(idx)}
+                    className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${
+                      isActive 
+                        ? 'w-8 bg-[#e2c06a] shadow-[0_0_8px_rgba(226,192,106,0.6)]' 
+                        : 'w-2 bg-white/20 hover:bg-white/40'
+                    }`}
+                    aria-label={`Show testimonial page ${idx + 1}`}
+                  />
+                );
+              })}
             </div>
           </section>
 
