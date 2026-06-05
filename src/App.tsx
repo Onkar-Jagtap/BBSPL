@@ -245,7 +245,7 @@ export default function App() {
                   Service.
                 </h1>
 
-                <p className="text-sm sm:text-base md:text-lg text-[#e8e6e2] leading-relaxed max-w-lg font-light">
+                <p className="text-[1.15rem] text-[#f5f3ef] leading-[1.8] max-w-lg font-light">
                   Connecting growing Indian enterprises with 100% verified B2B service providers across technology, IT hardware rentals, recruitment, compliance, and facilities management under a single master Quality Agreement.
                 </p>
 
@@ -335,7 +335,7 @@ export default function App() {
                   <span className="italic text-[#e2c06a]">100+ Premium Services.</span>
                 </h2>
               </div>
-              <p className="text-xs text-[#e8e6e2] max-w-md leading-relaxed md:pb-2 font-light">
+              <p className="text-[1.15rem] text-[#f5f3ef] max-w-md leading-[1.8] md:pb-2 font-light">
                 We manage service levels meticulously. Select any sector below to specify targets, download contracts, or view certified operational vendors ready for your nationwide operations.
               </p>
             </div>
@@ -367,7 +367,7 @@ export default function App() {
                     {svc.category}
                   </h3>
                   
-                  <p className="text-xs text-[#e5e2dd] leading-relaxed mb-6 flex-1 font-light">
+                  <p className="text-xs text-[#f9f8f6] leading-[1.7] mb-6 flex-1 font-light">
                     {svc.shortDesc}
                   </p>
 
@@ -390,7 +390,7 @@ export default function App() {
                 We Don't Just Sell Services. <br />
                 <span className="italic text-[#e2c06a]">We Simplify Solutions.</span>
               </h2>
-              <p className="text-xs text-[#e8e6e2] leading-relaxed">
+              <p className="text-[1.15rem] text-[#f5f3ef] leading-[1.8] font-light">
                 We find elite solutions at direct-contractor rates. When you request any corporate service, we source side-by-side quotations from our pre-approved national network. You select your preferred bid, and we earn a referral commission directly from the supplier. Absolutely zero markup or fees passed on to your business.
               </p>
             </div>            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -410,7 +410,7 @@ export default function App() {
                   <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mb-2 font-head">
                     {step.title}
                   </h4>
-                  <p className="text-[11px] sm:text-xs text-[#e5e2dd] leading-relaxed font-light">
+                  <p className="text-[11px] sm:text-xs text-[#f9f8f6] leading-[1.7] font-light">
                     {step.desc}
                   </p>
                 </div>
@@ -454,7 +454,7 @@ export default function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="glass-card p-8 rounded-2xl">
-                <p className="text-xs sm:text-sm text-[#e8e6e2] leading-relaxed italic font-light">
+                <p className="text-[1.15rem] text-[#f5f3ef] leading-[1.8] italic font-light">
                   "BusinessBridge saved us weeks of redundant tender documentation and supplier sourcing. IT software infrastructure, Facility operations, and physical building security — all aggregated transparently under one managed agreement."
                 </p>
                 <div className="mt-6 flex items-center gap-3">
@@ -463,13 +463,13 @@ export default function App() {
                   </div>
                   <div>
                     <h4 className="text-[11px] font-bold font-head uppercase tracking-wider text-white">Rajesh Kumar</h4>
-                    <p className="text-[9px] text-[#bcbab4] font-light">Director of Operations, TechCorp India</p>
+                    <p className="text-[10px] text-zinc-300 font-light">Director of Operations, TechCorp India</p>
                   </div>
                 </div>
               </div>
 
               <div className="glass-card p-8 rounded-2xl">
-                <p className="text-xs sm:text-sm text-[#e8e6e2] leading-relaxed italic font-light">
+                <p className="text-[1.15rem] text-[#f5f3ef] leading-[1.8] italic font-light">
                   "Our legal audits and ISO standard certification targets through BusinessBridge was exceptionally prompt. Their verified attorney network handled trademark applications, internal controls documentation, and compliance filings within timeline limits."
                 </p>
                 <div className="mt-6 flex items-center gap-3">
@@ -478,7 +478,7 @@ export default function App() {
                   </div>
                   <div>
                     <h4 className="text-[11px] font-bold font-head uppercase tracking-wider text-white">Priya Mehta</h4>
-                    <p className="text-[9px] text-[#bcbab4] font-light">Managing Director, Precision Engineering Ltd.</p>
+                    <p className="text-[10px] text-zinc-300 font-light">Managing Director, Precision Engineering Ltd.</p>
                   </div>
                 </div>
               </div>
@@ -533,7 +533,7 @@ export default function App() {
                             transition={{ duration: 0.35, ease: 'easeInOut' }}
                           >
                             <div className="px-5 pb-5 pt-1.5 border-t border-white/[0.02]">
-                              <p className="text-xs text-[#bcbab4] leading-relaxed font-light">
+                              <p className="text-[1.15rem] text-[#f5f3ef] leading-[1.8] font-light">
                                 {q.answer}
                               </p>
                             </div>
@@ -580,7 +580,7 @@ export default function App() {
                             transition={{ duration: 0.35, ease: 'easeInOut' }}
                           >
                             <div className="px-5 pb-5 pt-1.5 border-t border-white/[0.02]">
-                              <p className="text-xs text-[#bcbab4] leading-relaxed font-light">
+                              <p className="text-[1.15rem] text-[#f5f3ef] leading-[1.8] font-light">
                                 {q.answer}
                               </p>
                             </div>
